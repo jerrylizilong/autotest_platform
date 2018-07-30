@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - general_test_batch{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/core/test_batch.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script>window.onload =function(){
+            document.getElementById('btn_reset').click();
+            document.getElementById('btn_reset1').click();
+            <!--document.getElementsByName('refresh')[0].click();-->
+            }</script>
+
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;" >
+
+                <h1 style="text-align:center">关联测试用例</h1>
+        <form class="form-horizontal" id="new_test_suite" >
+            <div class="form-group">
+		        <label for="id" class="col-sm-2 control-label">用例集ID</label>
+                <div class="col-sm-10">
+                             <input type="text" class="form-control readonly" id="id" name="id" readonly="readonly">
+                </div>
+            </div>
+                        <div class="form-group">
+		        <label for="run_type" class="col-sm-2 control-label">执行类型</label>
+                <div class="col-sm-10">
+                     <input type="text" class="form-control readonly" id="run_type" name="run_type" readonly="readonly">
+                </div>
+            </div>
+        </form>
+    </div>
+
+        <ul id="myTab" class="nav nav-tabs">
+	<li>
+		<a href="#home" data-toggle="tab">
+			 已关联用例
+		</a>
+	</li>
+	<li class="active"><a href="#ios" data-toggle="tab">关联新用例</a></li>
+    <div id="myTabContent" class="tab-content">
+	    <div class="tab-pane fade in active" id="home">
+            <h1></h1>
+            <div class="panel-body" style="padding-bottom:10px;" >
+            <div class="panel panel-default">
+            <!--<div class="panel-heading">查询条件</div>-->
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                     <div class="panel-heading">查询条件</div>
+                    <div class="form-group" style="margin-top:15px">
+                        <label class="control-label col-sm-1" for="selectStatus">执行状态</label>
+                        <div class="col-sm-2">
+                        <select class="form-control" onchange="selectOnchang(this)" id="selectStatus">
+                            <option value="">-请选择-</option>
+                            <option value="0">0-待执行</option>
+                            <option value="1">1-执行成功</option>
+                            <option value="2">2-执行失败</option>
+                            <option value="3">3-无法执行</option>
+                            </select>
+                            </div>
+                        <label class="control-label col-sm-1" for="casename">名称</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="casename" size="20">
+                        </div>
+
+                        <div class="col-sm-2" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary" onclick="searchTestBatch({{id}})">查询</button>
+                             <button id="btn_reset" type="button" class="btn btn-default" onclick="return initPage({{id}})">重置</button>
+                        </div>
+                    </div>
+                </form>
+                        <!--</form>-->
+        <table id="tb_test_batch"></table>
+            </div>
+        </div>
+            </div>
+           </div>
+        	<div class="tab-pane fade" id="ios">
+                <h1></h1>
+                    <!--<p>home</p>-->
+            <div class="panel-body" style="padding-bottom:10px;" >
+            <div class="panel panel-default">
+            <!--<div class="panel-heading">查询条件</div>-->
+            <div class="panel-body">
+                <form id="formSearch1" class="form-horizontal">
+                     <div class="panel-heading">查询条件</div>
+                    <div class="form-group" style="margin-top:15px">
+                        <label class="control-label col-sm-1" for="selectStatus1">执行状态</label>
+                        <div class="col-sm-2">
+                        <select class="form-control" onchange="selectOnchang(this)" id="selectStatus1">
+                            <option value="">-请选择-</option>
+                            <option value="0">0-待执行</option>
+                            <option value="1">1-执行成功</option>
+                            <option value="2">2-执行失败</option>
+                            <option value="3">3-无法执行</option>
+                            </select>
+                            </div>
+                        <label class="control-label col-sm-1" for="casename1">名称</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="casename1" size="20">
+                        </div>
+
+                        <div class="col-sm-2" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_query1" class="btn btn-primary" onclick="searchTestBatch1({{id}})">查询</button>
+                             <button id="btn_reset1" type="button" class="btn btn-default" onclick="return initPage1({{id}})">重置</button>
+                        </div>
+                    </div>
+                </form>
+                        <!--</form>-->
+        <table id="tb_test_batch1"></table>
+            </div>
+        </div>
+            </div>
+           </div>
+            </div>
+            </div>
+</ul>
+</div>
+<style>
+.error{
+	color:red;
+}
+</style>
+
+    </div>
+{% endblock %}

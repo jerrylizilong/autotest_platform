@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - general_test_batch{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/core/attach_test_batch.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script>window.onload =function(){
+            <!--document.getElementById('btn_reset').click();-->
+            document.getElementById('btn_reset1').click();
+            document.getElementById('btn_query1').click();
+            <!--document.getElementsByName('refresh')[0].click();-->
+            }</script>
+
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;" >
+
+                <h1 style="text-align:center">关联测试用例</h1>
+                <font color="red"> 注意： 执行类型为 Chrome 时，不能关联 android 模块的用例， 否则无法执行！</font>
+        <form class="form-horizontal" id="new_test_suite" action="/edit_test_suite" method="post">
+            <div class="form-group">
+		        <label for="type" class="col-sm-2 control-label">用例集ID</label>
+                <div class="col-sm-10">
+                             <input type="text" class="form-control readonly" id="id" name="id" readonly="readonly">
+                </div>
+            </div>
+             <div class="form-group">
+                <label for="run_type" class="col-sm-2 control-label">执行类型</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control required" id="run_type" name="run_type" readonly="readonly">
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+            <!--<div class="panel-body" style="padding-bottom:10px;" >-->
+            <!--<div class="panel panel-default">-->
+            <!--<div class="panel-heading">查询条件</div>-->
+            <div class="panel-body">
+                <form id="formSearch1" class="form-horizontal">
+                     <div class="panel-heading">查询条件</div>
+                    <div class="form-group" style="margin-top:15px">
+                        <label for="type" class="control-label col-sm-1">执行类型</label>
+                        <div class="col-sm-1">
+                            <select class="form-control required" name="type" id="type" onchange="if(this.value != '') setModule(this.options[this.selectedIndex].value);">
+                        <option value="">-请选择-</option>
+                        <option value="普通用例" >普通用例</option>
+                        <option value="Android" >Android</option>
+                    </select>
+                        </div>
+
+                        <label class="control-label col-sm-1" for="module">模块</label>
+                        <div class="col-sm-1">
+                            <select class="form-control required" multiple name="module" id="module">
+                        <option value="">-请选择-</option>
+                     </select>
+                            </div>
+                        <label class="control-label col-sm-1" for="casename1">名称</label>
+                        <div class="col-sm-1">
+                            <input type="text" class="form-control" id="casename1" size="20">
+                        </div>
+                       <label class="control-label col-sm-1" for="ipList" id ="ipListLabel">设备列表</label>
+                        <div class="col-sm-1">
+                        <select class="form-control required"  multiple name="ipList" id="ipList">
+                        </select>
+                            </div>
+                            <label class="control-label col-sm-1" for="browserList" >浏览器列表</label>
+                        <div class="col-sm-1">
+                        <select class="form-control required"  multiple name="browserList" id="browserList">
+                            <option value="" selected="selected">-请选择-</option>
+                            <option value="Chrome">Chrome</option>
+                            <option value="Firefox">Firefox</option>
+                        </select>
+
+                        </div>
+                        <div class="col-sm-4" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_query1" class="btn btn-primary" onclick="return searchTestBatch1({{id}})">查询</button>
+                             <button id="btn_reset1" type="button" class="btn btn-default" onclick="return initPage({{id}})">重置</button>
+                            <button id="btn_run_all" type="button" class="btn btn-default" onclick="window.location.href=('/test_batch_detail?test_suite_id={{id}}')">执行情况</button>
+
+                        </div>
+                    </div>
+                </form>
+                        <!--</form>-->
+                        <div id="toolbar" class="btn-group">
+            <button id="btn_attach" type="button" class="btn btn-default" onclick="attachTestCase({{id}})">
+                <span class="glyphicon" aria-hidden="true"></span>关联
+            </button>
+        </div>
+        <table id="tb_test_batch1"></table>
+            </div>
+        </div>
+            </div>
+           </div>
+            </div>
+</div>
+<style>
+.error{
+	color:red;
+}
+</style>
+
+    </div>
+{% endblock %}

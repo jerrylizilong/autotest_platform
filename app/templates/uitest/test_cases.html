@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - test suites{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/core/test_case.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <h1 style="text-align:center">查询测试用例</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">查询条件</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group" style="margin-top:15px">
+                        <label class="control-label col-sm-1" for="name">模块</label>
+                        <div class="col-sm-3">
+                        <select class="form-control" onchange="selectOnchang(this)" id="selectModule">
+                            <option>All</option>
+                            <option>setting</option>
+                            <option>public</option>
+                            <option>data</option>
+                            <option>system</option>
+                            <option>monitor</option>
+                            <option>userBehavior</option>
+                            <option>android</option>
+                            <option>H5_back</option>
+                            <option>H5_front</option>
+                            <option>H5_SDK</option>
+                            </select>
+                            </div>
+                        <label class="control-label col-sm-1" for="name">名称</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="name">
+                        </div>
+
+                        <div class="col-sm-4" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary" onclick="searchTestCase()">查询</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add" type="button" class="btn btn-default" onclick="window.location.href=('/add_test_case')">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+            </button>
+        </div>
+        <table id="tb_test_cases"></table>
+    </div>
+{% endblock %}

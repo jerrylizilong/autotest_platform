@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - 节点管理{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/others/hubs.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <h1 style="text-align:center">节点管理</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">查询条件</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group" style="margin-top:15px">
+                        <label class="control-label col-sm-1" for="name">名称</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="name">
+                        </div>
+
+                        <div class="col-sm-6" style="text-align:left;">
+                            <button type="button" style="margin-left:70px" id="btn_query" class="btn btn-primary" onclick="searchHubs()">查询</button>
+                            <button type="button" style="margin-left:70px" id="btn_check_hubs" class="btn btn-primary" onclick="check_hubs()">检测</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="toolbar" class="btn-group">
+        </div>
+        <table id="tb_hubs"></table>
+    </div>
+{% endblock %}

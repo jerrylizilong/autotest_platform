@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - 单元测试记录{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/others/unittest.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <h1 style="text-align:center">单元测试详情</h1>
+        <div class="main-container" id="main" style="height:100%" >
+         <iframe src="{{file_name}}" width="100%" height="100%" frameborder="0" onload="setIframeHeight(this)">
+         您的浏览器不支持iframe，请升级
+         </iframe>
+        </div>
+    </div>
+{% endblock %}

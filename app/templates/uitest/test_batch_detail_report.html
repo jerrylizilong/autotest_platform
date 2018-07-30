@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - general_test_batch{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/core/test_batch.js"></script>
+
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script>window.onload =function(){
+            document.getElementById('btn_reset').click();
+            <!--document.getElementById('btn_reset1').click();-->
+            <!--document.getElementsByName('refresh')[0].click();-->
+            }</script>
+    {% for jsfile_name in script_list %}
+        <script src="{{ host }}/{{ jsfile_name }}.js"></script>
+    {% endfor %}
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;" >
+
+                <h1 style="text-align:center">查看测试结果</h1>
+        <div class="overview-score">
+        <div class="lay2">
+     <div class="form-group">
+		        <label for="id" class="col-sm-2 control-label">用例集ID</label>
+                <div class="col-sm-2">
+                             <input type="text" class="form-control readonly" id="id" name="id" readonly="readonly">
+                </div>
+            <!--</div>-->
+                        <!--<div class="form-group">-->
+		        <label for="run_type" class="col-sm-2 control-label">执行类型</label>
+                <div class="col-sm-2">
+                     <input type="text" class="form-control readonly" id="run_type" name="run_type" readonly="readonly">
+                </div>
+            <!--</div>-->
+                  <!--<div class="form-group">-->
+		        <label for="success" class="col-sm-2 control-label">成功数</label>
+                <div class="col-sm-2">
+                     <input type="text" class="form-control readonly" id="success" name="success" readonly="readonly">
+                </div>
+            <!--</div>-->
+                  <!--<div class="form-group">-->
+		        <label for="fail" class="col-sm-2 control-label">失败数</label>
+                <div class="col-sm-2">
+                     <input type="text" class="form-control readonly" id="fail" name="fail" readonly="readonly">
+                </div>
+            <!--</div>-->
+                  <!--<div class="form-group">-->
+                      <label for="pending" class="col-sm-2 control-label">执行中</label>
+                <div class="col-sm-2">
+                     <input type="text" class="form-control readonly" id="running" name="running" readonly="readonly">
+                </div>
+		        <label for="pending" class="col-sm-2 control-label">待执行</label>
+                <div class="col-sm-2">
+                     <input type="text" class="form-control readonly" id="pending" name="pending" readonly="readonly">
+                </div>
+            <!--</div>-->
+              <!--<div class="form-group">-->
+		        <label for="total" class="col-sm-2 control-label">总数</label>
+                <div class="col-sm-2">
+                     <input type="text" class="form-control readonly" id="total" name="total" readonly="readonly">
+                </div>
+            <!--</div>-->
+              <!--<div class="form-group">-->
+		        <label for="successRate" class="col-sm-2 control-label">执行通过率</label>
+                <div class="col-sm-2">
+                     <input type="text" class="form-control readonly" id="successRate" name="successRate" readonly="readonly">
+                </div>
+
+            </div>
+        </div>
+            <div class="lay1">
+               <div>{{ myechart|safe }}</div>
+                </div>
+        </div>
+
+
+        </div>
+            <div class="panel-body" style="padding-bottom:10px;" >
+            <div class="panel panel-default">
+            <!--<div class="panel-heading">查询条件</div>-->
+            <div class="panel-body">
+                <form id="formSearch1" class="form-horizontal">
+                     <div class="panel-heading">查询条件</div>
+                    <div class="form-group" style="margin-top:15px">
+                        <label class="control-label col-sm-1" for="selectStatus">执行状态</label>
+                        <div class="col-sm-1">
+                        <select class="form-control" onchange="selectOnchang(this)" id="selectStatus">
+                            <option value="">-请选择-</option>
+                            <option value="0">0-待执行</option>
+                            <option value="1">1-执行成功</option>
+                            <option value="2">2-执行失败</option>
+                            <option value="3">3-无法执行</option>
+                            </select>
+                            </div>
+                        <label class="control-label col-sm-1" for="casename">名称</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="casename" size="20">
+                        </div>
+                         <label class="control-label col-sm-1" for="ipList" id ="ipListLabel">设备列表</label>
+                        <div class="col-sm-1">
+                        <select class="form-control required"  multiple name="ipList" id="ipList">
+                        </select>
+                        </div>
+                        <div class="col-sm-4" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary" onclick="searchTestBatch({{id}})">查询</button>
+                             <button id="btn_reset" type="button" class="btn btn-default" onclick="return initPage({{id}})">刷新</button>
+                            <button id="btn_rerun_all" type="button" class="btn btn-default" onclick="run_test_case_all({{id}})">重跑全部用例</button>
+                            <button id="btn_rerun_part" type="button" class="btn btn-default" onclick="run_test_case_part({{id}})">重跑失败用例</button>
+                            <button id="btn_attach" type="button" class="btn btn-default" onclick="window.location.href=('/attach_test_batch?test_suite_id={{id}}')">关联用例</button>
+                            <button id="btn_runIp_test" type="button" class="btn btn-default" onclick="run_test_case_all_Ip({{id}})">指定设备重跑</button>
+                        </div>
+                    </div>
+                </form>
+
+                        <!--</form>-->
+        <table id="tb_test_batch"></table>
+            </div>
+        </div>
+            </div>
+           </div>
+            </div>
+</div>
+<style>
+.error{
+	color:red;
+}
+.lay1{ width:50%; height:50%; border:0px solid #FF6699; float:left}
+.lay2{ width:50%; height:50%; border:0px solid #FF6699; float:left}
+</style>
+
+    </div>
+{% endblock %}

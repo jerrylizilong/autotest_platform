@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - edit test suites{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/core/test_suite.js"></script>
+    <script src="../static/scripts/core/test_batch.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <!--<script>window.onload =function(){document.getElementById('btn_reset').click();}</script>-->
+
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;" >
+        <h1 style="text-align:center">共有图片{{imgCnt}}张</h1>
+        <h1 style="text-align:center">{{imgTitle}}</h1>
+                    <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="btn_next" type="button" class="btn btn-default" onclick="window.location.href=('/view_test_suite_screenshot?id={{id}}&test_batch_id={{test_batch_id}}&type={{type}}&index={{index}}')">下一页</button>
+                    <button id="btn_back" type="button" class="btn btn-default" onclick="return_page('{{test_batch_id}}','{{type}}')">返回</button>
+                    </div>
+            </div>
+            <div class="form-group">
+                <div id="imglist" align="middle">
+                <img id="image1" name="1" src="{{imgUrl}}" height="800" align="middle"/>
+                    <!--<img id="image1" name="1" src="http://172.16.100.55:5000/static/screenshot/normalScreenShot/8523_success2018-01-24_12_09_20.jpg" height="800" align="middle"/>-->
+                </div>
+            </div>
+
+
+
+<style>
+.error{
+	color:red;
+}
+</style>
+        </form>
+    </div>
+{% endblock %}

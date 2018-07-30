@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - test suites{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/core/test_suite.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <h1 style="text-align:center">查询测试用例集</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">查询条件</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group" style="margin-top:15px">
+                        <label class="control-label col-sm-1" for="name">执行状态</label>
+                        <div class="col-sm-2">
+                        <select class="form-control" onchange="selectOnchang(this)" id="selectStatus">
+                            <option value="">-请选择-</option>
+                            <option value="-1">未执行</option>
+                            <option value="0">0-准备执行</option>
+                            <option value="1">1-执行完成</option>
+                            <option value="2">2-执行中</option>
+                            </select>
+                            </div>
+                        <label class="control-label col-sm-1" for="name">执行类型</label>
+                        <div class="col-sm-2">
+                        <select class="form-control" onchange="selectOnchang(this)" id="run_type">
+                         <option value="">-请选择-</option>
+                         <option value="Android">Android</option>
+                         <option value="iOS">iOS</option>
+                         <option value="Chrome">Chrome</option>
+                            </select>
+                            </div>
+                        <label class="control-label col-sm-1" for="name">名称</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="name" size="20">
+                        </div>
+
+                        <div class="col-sm-2" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary" onclick="searchTestSuite()">查询</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add" type="button" class="btn btn-default" onclick="window.location.href=('/add_test_suite')">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+            </button>
+        </div>
+        <table id="tb_test_suites"></table>
+    </div>
+{% endblock %}
