@@ -77,15 +77,9 @@ moduleArr['公共用例'] =
  ];
 moduleArr['普通用例'] =
 [
- {txt:'Android', val:'android'},
- {txt:'setting', val:'setting'},
- {txt:'data', val:'data'},
- {txt:'system', val:'system'},
- {txt:'userBehavior', val:'userBehavior'},
- {txt:'monitor', val:'monitor'},
-  {txt:'H5管理后台', val:'H5_back'},
-   {txt:'H5 SDK', val:'H5_SDK'},
-  {txt:'H5平台', val:'H5_front'}
+ {txt:'模块1', val:'模块1'},
+ {txt:'模块2', val:'模块2'},
+ {txt:'模块3', val:'模块3'}
  ];
 function setModule(type)
 {
