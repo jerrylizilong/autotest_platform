@@ -1,6 +1,9 @@
 # autotest_platform
 基于python+selenium的自动化测试管理、执行平台。
 
+## 版本要求：
+python 3.4 以上
+
 ## 1. 管理平台：
 基于flask进行开发，进行用例、用例集、步骤等的增删改查等功能。
 
