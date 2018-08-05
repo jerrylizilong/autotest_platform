@@ -743,7 +743,7 @@ def copy_test_keyword():
                 result = jsonify({'code': 200, 'msg': 'copy success!'})
             else:
                 result = jsonify({'code': 500, 'msg': 'test keyword is not found!'})
-        return result
+        return result,{'Content-Type': 'application/json'}
 
 @mod.route('/delete_test_keyword', methods=['POST', 'GET'])
 @user.authorize

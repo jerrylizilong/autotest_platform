@@ -15,6 +15,31 @@ class test_user_manage:
             results.append(result)
         return results
 
+    def show_users(self,username):
+        results = []
+        if username=='':
+            sql = 'select id, username from auth_user order by id desc ;'
+        else:
+            sql = 'select id, username from auth_user where username like "%' + username + '%" order by id desc;'
+        users = useDB.useDB().search(sql)
+        for i in range(len(users)):
+            result = {}
+            result['id'] = users[i][0]
+            result['username'] = users[i][1]
+            results.append(result)
+        print(results)
+        return results
+
+    def new_user(self, username,password):
+        users = self.show_users(username)
+        if len(users):
+            return 0
+        else:
+            sql = 'insert into auth_user (username,password) values ("%s","%s");' %(username,password)
+            print(sql)
+            useDB.useDB().insert(sql)
+            return 1
+
     def update_user_password(self, id, fieldlist, valueList):
         update_value = '%s = "%s"' % (fieldlist[0], valueList[0])
         for i in range(1, len(fieldlist)):

@@ -27,7 +27,7 @@ class test_keyword_manage:
         return results
 
     def new_test_keyword(self,name, paraCount, description, template,example):
-        sql = "insert into test_keyword (keyword, paraCount, description, template,example) values ('%s'','%s'','%s'','%s'','%s'');" %(name, paraCount, description, template,example)
+        sql = "insert into test_keyword (keyword, paraCount, description, template,example) values ('%s','%s','%s','%s','%s');" %(name, paraCount, description, template,example)
         print(sql)
         useDB.useDB().insert(sql)
         return True

@@ -1,34 +1,12 @@
 from flask import Blueprint,render_template, jsonify, request,session
 from app import log
+from app.core import hubs
 from app.view import viewutil,user
 from app.db import test_unittest_manage
 
 mod = Blueprint('unittest', __name__,
                         template_folder='templates')
 
-#
-# @mod.route('/')
-# @mod.route('/index')
-# @user.authorize
-# def index():
-#     list = session.get('user', None)
-#     username = list[0]["username"]
-#     return render_template("util/index.html", message='Hello, %s' % username)
-#
-# @mod.route('/test')
-# def index1():
-#     user = { 'nickname': 'Miguel' } # fake user
-#     return render_template("util/500.html")
-#
-# @mod.errorhandler(404)
-# def page_not_found(e):
-#     return render_template('util/404.html',message = 'Sorry , page not found!'), 404
-#
-#
-# @mod.errorhandler(500)
-# def internal_server_error(e):
-#     return render_template('util/500.html', message = 'Something is wrong ,please retry !'), 500
-#
 
 
 #单元测试列表
@@ -109,7 +87,7 @@ def run_unittest():
 @mod.route('/testhubs')
 @user.authorize
 def testhubs():
-    return render_template("util/hubs.html")
+    return render_template("util/hubs.html",port=4444)
 
 @mod.route('/check_hubs.json', methods=['POST', 'GET'])
 @user.authorize
@@ -121,12 +99,47 @@ def check_hubs():
         result = jsonify({'code': 500, 'msg': 'should be get!'})
         return result
     else:
-        from app.core import hubs
         log.log().logger.info('start checking hubs')
         hubs.hubs().checkHubs()
         result = jsonify({'code': 200, 'msg': 'success!'})
 
         return result
+
+
+@mod.route('/add_hub.json', methods=['POST', 'GET'])
+def add_hub():
+    info = request.values
+    log.log().logger.info('info : %s' %info)
+    host = viewutil.getInfoAttribute(info, 'host')
+    port = viewutil.getInfoAttribute(info, 'port')
+    status=viewutil.getInfoAttribute(info, 'status')
+    hubs.hubs().updateHub(host,port,'0',status)
+    result = jsonify({'code': 200, 'msg': '新增成功'})
+    return result, {'Content-Type': 'application/json'}
+
+
+
+#新增节点
+@mod.route('/add_hub')
+@user.authorize
+def new_hub():
+    return render_template("util/new_hub.html",port=4444)
+
+#新增节点
+@mod.route('/edit_hub')
+@user.authorize
+def edit_hub():
+    info = request.values
+    id = viewutil.getInfoAttribute(info, 'id')
+    data = hubs.hubs().searchHubs(id)
+    if len(data):
+        host = data[0]['ip']
+        port = data[0]['port']
+    else:
+        host = ''
+        port = 4444
+    return render_template("util/new_hub.html", host=host,port=port)
+
 
 #节点列表
 @mod.route('/search_hubs.json', methods=['POST', 'GET'])

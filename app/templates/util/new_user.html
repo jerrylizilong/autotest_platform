@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}WingSDK 测试平台 - edit test cases{% endblock %}
+{% block title %}WingSDK 测试平台 - new user{% endblock %}
 
 {% block head %}
 <meta name="viewport" content="width=device-width" />
     <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
     <script src="../static/scripts/others/users.js"></script>
 
     <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
@@ -15,11 +17,20 @@
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
 
 {% endblock %}
+
 {% block content %}
     <div class="panel-body" style="padding-bottom:0px;">
-        <h1 style="text-align:center">修改个人信息</h1>
-        <form class="form-horizontal"  id="update_user_password" action="/user_password.json" method="post">
-             <div class="form-group">
+        <h1 style="text-align:center">新增用户</h1>
+        <form class="form-horizontal" enctype="multipart/form-data" id="new_user" action="/add_user.json" method="post">
+             <!--action="/save_new_test_case" method="post"-->
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control required" id="username" name="username"
+                           placeholder="请输入名称" required data-msg-required="不能为空">
+                </div>
+            </div>
+		    <div class="form-group">
                 <label for="password" class="col-sm-2 control-label">密码</label>
                 <div class="col-sm-10">
                     <input type="password" class="form-control required" id="password" name="password" placeholder="请输入密码" required data-msg-required="不能为空">
@@ -27,7 +38,8 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button id="button" class="btn btn-default" onclick="updateForm()">保存</button>
+                    <button id="submitButton" class="btn btn-default" onclick="addUser()">保存</button>
+                    <button id="btn_add" type="button" class="btn btn-default" onclick="window.location.href=('/users')">返回</button>
                     </div>
             </div>
 

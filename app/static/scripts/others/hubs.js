@@ -12,26 +12,47 @@ $(function () {
 
 });
 
+
 // submit form
-function submitAddForm() {
-   $("#new_test_case").validate();
-   $.validator.setDefaults({
-        submitHandler: function() {
-            document.getElementById("new_test_case").submit();
-    }
-});
+function addHub() {
+   $("#new_hub").validate();
+   $.ajax(
+          {
+            url: "/add_hub.json",
+            data:{"host":$("#host").val(), "port":$("#port").val(),"status":$("#status").val()},
+            type: "post",
+            beforeSend:function()
+            {
+              $("#tip").html("<span style='color:blue'>正在处理...</span>");
+              return true;
+            },
+            success:function(data)
+            {
+              if(data.code == 200)
+              {
+                alert('恭喜，成功！');
+                $("#tip").html("<span style='color:blueviolet'>恭喜，新增成功！</span>");
+                window.location.href=('/testhubs');
+              }
+              else
+              {
+                $("#tip").html("<span style='color:red'>失败，请重试</span>");
+                alert('失败，请重试: '+data.msg);
+                window.location.href=('/add_hub');
+              }
+            },
+            error:function()
+            {
+              alert('请求出错');
+            },
+             complete:function()
+            {
+              // $('#tips').hide();
+            }
+          });
+
    }
 
-
-function get_test_case_detail(id){
-  $.ajax({
-  url: '/test_case.json',
-  method: 'get',
-  data: {'id':id},
-  success: success,
-  dataType: dataType
-});
-}
 
 var TableInit = function () {
     var oTableInit = new Object();
@@ -89,23 +110,16 @@ var TableInit = function () {
                 }
                 return b;
                         }
-            }, {
-                field: 'androidConnect',
-                title: 'android设备是否已连接',
-                formatter: function(value,row,index) {
-            //通过判断单元格的值，来格式化单元格，返回的值即为格式化后包含的元素
-            var a = "";
-                if(value == "1") {
-                    var a = '<span style="color:#00ff00">已连接</span>';
-                }else if(value == "0") {
-                    var a = '<span style="color:#FF0000">未连接</span>';
-                }else{
-                    var a = '<span>'+value+'</span>';
-                }
-                return a;
+            },
+             {
+                field: 'operate',
+                title: '操作',
+                align: 'center',
+                formatter: function (value, row, index) {
+                        var a = '<a href="javascript:;" onclick="window.location.href=(\'/edit_hub?id='+ row.id + '\')">编辑</a> ';
+                        return a;
                         }
-            }
-
+              }
                 ]
         });
     };
@@ -154,219 +168,6 @@ function searchHubs(){
 
 
 
- // 编辑表单
-function get_edit_info(active_id)
-  {
-//    alert(active_id)
-    if(!active_id)
-    {
-      alert('Error！');
-      return false;
-    }
-    // var form_data = new Array();
-
-    $.ajax(
-        {
-          url: "/test_case.json",
-          data:{"id":active_id,"type":"test_case"},
-          type: "get",
-          dataType:"json",
-          beforeSend:function()
-          {
-            // $("#tip").html("<span style='color:blue'>正在处理...</span>");
-            return true;
-          },
-          success:function(data)
-          {
-            if(data)
-            {
-              // 解析json数据
-              var data = data;
-//              var data_obj0 = eval("("+data+")");
-//              var data_obj = eval("("+data_obj0+")");
-              var data_obj = data.rows
-
-              // 赋值
-              $("#id").val(active_id);
-              $("#name").val(data_obj.name);
-              $("#steps").val(data_obj.steps);
-              $("#description").val(data_obj.description);
-              $("#type").val(data_obj.isPublic);
-              var isPublic = data_obj.isPublic;
-              if(isPublic == 1)
-              {
-                $("#type").val('公共用例');
-                setModule('公共用例');
-              }else{
-                $("#type").val('普通用例');
-                setModule('普通用例');
-              }
-              $("#module").val(data_obj.module);
-            }
-
-            else
-            {
-              $("#tip").html("<span style='color:red'>失败，请重试</span>");
-             // alert('操作失败');
-            }
-          },
-          error:function()
-          {
-            alert('请求出错');
-          },
-          complete:function()
-          {
-            // $('#tips').hide();
-          }
-        });
-
-    return false;
-  }
-
-
-
-// 删除表单
-function delete_test_case(active_id)
-  {
-    if(confirm("确认删除吗？"))
-    {
-      if(!active_id)
-      {
-        alert('Error！');
-        return false;
-      }
-
-      $.ajax(
-          {
-            url: "delete_test_case",
-            data:{"id":active_id, "act":"del"},
-            type: "post",
-            beforeSend:function()
-            {
-              $("#tip").html("<span style='color:blue'>正在处理...</span>");
-              return true;
-            },
-            success:function(data)
-            {
-              if(data.code = 200)
-              {
-                alert('恭喜，删除成功！');
-                $("#tip").html("<span style='color:blueviolet'>恭喜，删除成功！</span>");
-
-
-                document.getElementById('btn_query').click();
-              }
-              else
-              {
-                $("#tip").html("<span style='color:red'>失败，请重试</span>");
-                alert('失败，请重试'+data.msg);
-              }
-            },
-            error:function()
-            {
-              alert('请求出错');
-            },
-            complete:function()
-            {
-              // $('#tips').hide();
-            }
-          });
-
-    }
-
-    // var form_data = new Array();
-    return false;
-  }
-
- function run_test_case(test_case_id){
-         $.ajax(
-        {
-          url: "/runtest.json",
-          data:{"id":test_case_id,"type":"test_case"},
-          type: "get",
-          dataType:"json",
-          beforeSend:function()
-          {
-            return true;
-          },
-          success:function(data)
-          {
-            if(data)
-            {
-              // 解析json数据
-              var data = data;
-              if(data.code==200){
-              alert('success!');
-              window.location.href=('/test_case_runhistory?id='+ test_case_id  )
-              }else{
-              alert('code is :'+data.code+' and message is :'+data.msg);
-              }
-
-
-
-            }
-
-            else
-            {
-              $("#tip").html("<span style='color:red'>失败，请重试</span>");
-             // alert('操作失败');
-            }
-          },
-          error:function()
-          {
-            alert('请求出错');
-          },
-          complete:function()
-          {
-            // $('#tips').hide();
-          }
-});
-}
-
- function copy_test_case(test_case_id){
-         $.ajax(
-        {
-          url: "/copy_test_case",
-          data:{"id":test_case_id},
-          type: "post",
-          dataType:"json",
-          beforeSend:function()
-          {
-            return true;
-          },
-          success:function(data)
-          {
-            if(data)
-            {
-              // 解析json数据
-              var data = data;
-              if(data.code==200){
-              alert('success!');
-              document.location.reload();
-              }else{
-              alert('code is :'+data.code+' and message is :'+data.msg);
-              }
-
-
-
-            }
-
-            else
-            {
-              $("#tip").html("<span style='color:red'>失败，请重试</span>");
-             // alert('操作失败');
-            }
-          },
-          error:function()
-          {
-            alert('请求出错');
-          },
-          complete:function()
-          {
-            // $('#tips').hide();
-          }
-});
-}
 
 function check_hubs(){
   $.ajax({

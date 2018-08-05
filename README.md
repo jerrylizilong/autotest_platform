@@ -7,9 +7,12 @@ python 3.4 以上
 ## 1. 管理平台：
 基于flask进行开发，进行用例、用例集、步骤等的增删改查等功能。
 
-## 2. 执行服务：
+## 2. 启动core服务：
+python app/core/coreservice.py
+
 - 基于selenium进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。
 - 需结合selenium grid 或 selenium docker 作为节点进行具体执行载体。
+
 
 ## 安装步骤：
 - 1. clone 或下载代码包到本地解压:   
@@ -19,16 +22,27 @@ git clone https://github.com/jerrylizilong/autotest_platform.git
 cd autotest_platform
 pip3 install -r requirements.txt
 
-- 3. 数据库配置： 创建数据库，并执行 init.sql 、 keyword.sql 建表并初始化配置数据。
+- 3. 数据库配置： 创建数据库，并执行 init.sql 建表并初始化配置数据。
 - 4. 配置： 修改 app/config.py 中关于数据库部分的配置： host、port、database、user、password。
 
 ## 启动：
-- 1. 启动 flask：
+### 1.启动 flask：
 python run.py        
 此时可通过访问  localhost:5000  访问登录界面。
 初始用户及密码：  admin/0
-- 2. 启动 core service（selenium 的执行服务）：
+### 2. 启动 core service（selenium 的执行服务）：
 python app/core/coreservice.py
+
+### 3. selenium 接入
+可以按以下两种方式进行接入：
+#### 3.1 selenium server接入：
+- 服务端启动： python app/core/service.py， 将通过9998 端口监听节点启动、关闭状态
+- selenium grid 节点启动： 将app/client 目录复制到已安装selenium driver 的服务器/PC 中，修改client.py文件中host 为服务端对应地址，并启动： 
+python client.py
+服务启动后，会启动 selenium server，并注册到服务器中。
+
+#### 3.2 其他方式（原有selenium server、selenium docker等）
+- 将已启动的selenium服务地址（如 http://172.10.XXX.XXX:4444）手动记录到 test_hub 表即可。
 
 
 ## 使用说明：

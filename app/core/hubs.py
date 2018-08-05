@@ -93,8 +93,11 @@ class hubs():
         return hubs
 
 
-    def searchHubs(self):
-        sql = "select id, ip, port, androidConnect,status from test_hubs;"
+    def searchHubs(self,id=''):
+        if id!='':
+            sql = "select id, ip, port, androidConnect,status from test_hubs where id = %s limit 1;" %str(id)
+        else:
+            sql = "select id, ip, port, androidConnect,status from test_hubs;"
         list = useDB.useDB().search(sql)
         log.log().logger.info('cases : %s' %list)
         results = []

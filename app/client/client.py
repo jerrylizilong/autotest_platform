@@ -1,9 +1,8 @@
 import os, subprocess,platform,socket
-
-serverIP = '172.16.100.55'
-# serverIP = 'localhost'
+## 修改host 为对应服务器地址
+host = 'localhost'
 serverPort = 9998
-port0 = '3457'
+port0 = '4444'
 
 def connectDevcie():
     '''''检查设备是否连接成功，如果成功返回True，否则返回False'''
@@ -37,7 +36,7 @@ def newHub(isOpen):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # 建立连接:
     try:
-        s.connect(( serverIP, serverPort))
+        s.connect(( host, serverPort))
         # 接收欢迎消息:
         print(s.recv(1024).decode('utf-8'))
         data = str(port0).encode('utf-8')

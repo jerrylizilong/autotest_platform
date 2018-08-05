@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - new hub{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/others/hubs.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <h1 style="text-align:center">编辑selenium 节点</h1>
+        <form class="form-horizontal" enctype="multipart/form-data" id="new_hub"  action="/add_hub.json" method="post">
+            <div class="form-group">
+                <label for="host" class="col-sm-2 control-label">Host IP</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control required" id="host" name="host"
+                           placeholder="请输入Host ip" required data-msg-required="不能为空" value="{{host}}">
+                </div>
+            </div>
+		    <div class="form-group">
+                <label for="port" class="col-sm-2 control-label">端口</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="port" name="port" placeholder="请输入端口，默认4444" value="{{port}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="status" class="col-sm-2 control-label">端口</label>
+                <div class="col-sm-10">
+                    <select class="form-control required" name="status" id="status" onchange="selectOnchang(this);">
+                         <option value="1">启用</option>
+                         <option value="0">停用</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">s
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="submitButton" class="btn btn-default" onclick="addHub()">保存</button>
+                    <button id="btn_add" type="button" class="btn btn-default" onclick="window.location.href=('/testhubs')">返回</button>
+                    </div>
+            </div>
+
+<style>
+.error{
+	color:red;
+}
+</style>
+        </form>
+    </div>
+{% endblock %}
