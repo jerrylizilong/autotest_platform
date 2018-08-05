@@ -12,8 +12,13 @@ python 3.4 以上
 - 需结合selenium grid 或 selenium docker 作为节点进行具体执行载体。
 
 ## 安装步骤：
-- 1. clone 或下载代码包到本地解压。
-- 2. 按requirements.txt 安装依赖。
+- 1. clone 或下载代码包到本地解压:   
+git clone https://github.com/jerrylizilong/autotest_platform.git
+
+- 2. 按requirements.txt 安装依赖:
+cd autotest_platform
+pip3 install -r requirements.txt
+
 - 3. 数据库配置： 创建数据库，并执行 init.sql 、 keyword.sql 建表并初始化配置数据。
 - 4. 配置： 修改 app/config.py 中关于数据库部分的配置： host、port、database、user、password。
 
