@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template, jsonify, request, session
+from flask import Blueprint,render_template, jsonify, request, session,redirect
 from app import log
 from app.view import viewutil
 from functools import wraps
@@ -67,6 +67,7 @@ def edit_user_password():
     return render_template("util/edit_user_password.html")
 
 @mod.route('/user_password.json', methods=['POST', 'GET'])
+@authorize
 def user_password():
     list = session.get('user', None)
     id = list[0]["id"]
@@ -75,10 +76,55 @@ def user_password():
     log.log().logger.info('info : %s' %info)
     password = viewutil.getInfoAttribute(info, 'password')
     log.log().logger.info('password : %s' %password)
-    md5Password = util.util().md5(password)
-    log.log().logger.info('md5Password : %s' %md5Password)
-    test_user_manage.test_user_manage().update_user_password(id, ['password'], [md5Password])
-    result = jsonify({'msg': '修改密码成功'})
+    if len(password):
+        md5Password = util.util().md5(password)
+        log.log().logger.info('md5Password : %s' %md5Password)
+        test_user_manage.test_user_manage().update_user_password(id, ['password'], [md5Password])
+        result = jsonify({'code':200,'msg': '修改密码成功'})
+    else:
+        result = jsonify({'code':500,'msg': '密码不得为空！'})
     return result, {'Content-Type': 'application/json'}
 
+
+#新增用户
+@mod.route('/add_user')
+@authorize
+def new_user():
+    return render_template("util/new_user.html")
+
+
+@mod.route('/users.json', methods=['POST', 'GET'])
+@authorize
+def show_users():
+    users = test_user_manage.test_user_manage().show_users(username='')
+    data1 = jsonify({'total': len(users), 'rows': users})
+    log.log().logger.info('data1: %s' %data1)
+    return data1,{'Content-Type': 'application/json'}
+
+#用户列表
+@mod.route('/users')
+@authorize
+def users():
+    return render_template("util/users.html")
+
+
+@mod.route('/add_user.json', methods=['POST', 'GET'])
+def add_user():
+    list = session.get('user', None)
+    info = request.values
+    log.log().logger.info('info : %s' %info)
+    username = viewutil.getInfoAttribute(info, 'username')
+    password = viewutil.getInfoAttribute(info, 'password')
+    log.log().logger.info('password : %s' %password)
+    md5Password = util.util().md5(password)
+    log.log().logger.info('md5Password : %s' %md5Password)
+    result0 = test_user_manage.test_user_manage().new_user(username,md5Password)
+    if result0:
+        result = jsonify({'code':200,'msg': '新增成功'})
+        return result,{'Content-Type': 'application/json'}
+    else:
+        result = jsonify({'code':500,'msg': '用户已存在！'})
+        return result,{'Content-Type': 'application/json'}
+
 #=========================登录模块结束===============================================#
+

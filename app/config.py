@@ -2,7 +2,7 @@ DBtype =  '2'   # '1' : sqlite,  2: mysql
 host='localhost'
 port='3306'
 user='root'
-password='password'
+password='jerryli'
 database='test_auto_new'
 
 isUseATX=True
