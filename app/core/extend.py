@@ -83,6 +83,15 @@ class extend():
         log.log().logger.info('verify result is : %s' % result)
         return result
 
+    def assert_title(self, driver, text):
+        if text in driver.title:
+            result = '1'
+        else:
+            result = '2'
+        log.log().logger.info('verify result is : %s' % result)
+        return result
+
+
     def assert_element_text(self,driver,para_list,isNot=False):
         result = '2'
         para_list=str(para_list).split(',')
