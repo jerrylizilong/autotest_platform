@@ -1,12 +1,13 @@
 
 
-update ： 2018-08-24
+# update ： 2018-08-24
 # 新增android 设备使用 ATX 进行测试：
 
 ## 修改：
 ### 1. app/config.py 文件新增 ATXHost 配置，需要将 atx server 的地址配置到该项中
 
-## 关于 ATX server：
+## 前提： 已安装 atx server进行设备管理
+### 关于 ATX server：
 请查看这篇文章的介绍：
 https://testerhome.com/topics/11738
 
