@@ -1,4 +1,4 @@
-from app import useDB
+from app import useDB, config
 from app.core import log,util
 import json
 class hubs():
@@ -111,3 +111,31 @@ class hubs():
             results.append(result)
         return results
 
+    def getDevices(self):
+        url = config.ATXHost + '/list'
+        response, content = util.util().send(url)
+        content = json.loads(content)
+        deviceList = []
+        for device in content:
+            if device['present']:
+                deviceList.append(device['ip'] + ':7912')
+            else:
+                # log.log().logger.info(device['ip'] + ' is not ready!')
+                pass
+        return deviceList
+
+    # 获取设备列表信息
+    def getDevicesList(self):
+        url = config.ATXHost + '/list'
+        response, content = util.util().send(url)
+        content = json.loads(content)
+        deviceLists = []
+        for device in content:
+            deviceList = {}
+            if device['present']:
+                deviceList["ip"] = device['ip'] + ':7912'
+                deviceList["model"] = device['model']
+                deviceLists.append(deviceList)
+            else:
+                log.log().logger.info(device['ip'] + ' is not ready!')
+        return deviceLists

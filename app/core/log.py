@@ -10,6 +10,7 @@ class log :
         import logging
         formatter = logging.Formatter('%(asctime)-15s - [%(filename)s: %(lineno)s] -%(levelname)s: %(message)s');
         logzero.formatter(formatter)
+        logzero.loglevel(logging.INFO)
         self.logger = logzero.logger
 
 

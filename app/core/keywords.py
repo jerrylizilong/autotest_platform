@@ -4,19 +4,6 @@ from app import useDB
 
 class keywords(object):
 
-    def getPara1(self, keyword):
-        print(self.keywords)
-        keywords = self.keywords
-        result = 0
-        log.log().logger.info(keyword)
-        for list in keywords:
-            if list['index']==keyword:
-                result =1
-                return list['paraCount'], list['template']
-                break
-        if result ==0:
-            return '',''
-
     def getPara(self, keyword):
         result = 0
         log.log().logger.info(keyword)

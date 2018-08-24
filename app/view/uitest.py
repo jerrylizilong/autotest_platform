@@ -295,7 +295,7 @@ def save_new_test_suite():
                 code = 500
             result = jsonify({'code': code, 'msg': message,'ext':ext})
             log.log().logger.info(result)
-            log.log().logger.info('code is : %s'%result['code'])
+            # log.log().logger.info('code is : %s'%result['code'])
             return result
 
 @mod.route('/add_test_suite', methods=['POST', 'GET'])

@@ -60,7 +60,7 @@ class extend():
         else:
             fileName, fileName1 = util.util().screenshot('normal', id)
         try:
-            print(fileName)
+            # print(fileName)
             driver.save_screenshot(fileName)
             screenFileList.append(fileName1)
             result = 1

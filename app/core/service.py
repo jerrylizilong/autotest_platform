@@ -8,14 +8,14 @@ def tcplink(sock, addr):
     while True:
         try:
             data = sock.recv(1024)
-            print(data.decode('utf-8'))
+            # print(data.decode('utf-8'))
         except ConnectionResetError:
             hubs.hubs().updateHub(ip,'all','0','0')
             break
         time.sleep(1)
         ip = addr[0]
         port = data.decode('utf-8')
-        print(data.decode('utf-8'))
+        # print(data.decode('utf-8'))
         if not data :
             break
         elif data.decode('utf-8') == 'exit':

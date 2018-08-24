@@ -119,7 +119,7 @@ class test_batch_manage(object):
         useDB.useDB().insert(sql)
         # steps = useDB.useDB().insert('select steps from test_case where id = (select test_case_id from test_batch where id = %s);' %id)
         sql = 'update test_batch set status=0, steps =(select steps from test_case where id = %s) where id = %s ;' %(test_case_id,id)
-        print(sql)
+        # print(sql)
         useDB.useDB().insert(sql)
 
 
@@ -311,12 +311,12 @@ class test_batch_manage(object):
             for id in result:
                 sql = 'SELECT COUNT(1) FROM test_batch WHERE test_suite_id = %s AND STATUS in (0,4);' %id
                 result1 = useDB.useDB().search(sql)
-                print(result1[0][0])
+                # print(result1[0][0])
                 if len(result1) and (result1[0][0]==0):
                     if check_result !='':
                         check_result += ','
                     check_result +=(str(id[0]))
-                    print(check_result)
+                    # print(check_result)
         return check_result
 
 

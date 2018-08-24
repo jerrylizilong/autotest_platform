@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template, jsonify, request,session
-from app import log
+from app import log, config
 from app.core import hubs
 from app.view import viewutil,user
 from app.db import test_unittest_manage
@@ -166,7 +166,7 @@ def search_hubs():
 @mod.route('/view_hub')
 @user.authorize
 def view_hub():
-    return render_template("util/view_hub.html")
+    return render_template("util/view_hub.html", host=config.ATXHost)
 
 
 

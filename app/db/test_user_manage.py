@@ -27,7 +27,7 @@ class test_user_manage:
             result['id'] = users[i][0]
             result['username'] = users[i][1]
             results.append(result)
-        print(results)
+        # print(results)
         return results
 
     def new_user(self, username,password):
@@ -36,7 +36,7 @@ class test_user_manage:
             return 0
         else:
             sql = 'insert into auth_user (username,password) values ("%s","%s");' %(username,password)
-            print(sql)
+            # print(sql)
             useDB.useDB().insert(sql)
             return 1
 

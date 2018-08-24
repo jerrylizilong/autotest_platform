@@ -49,7 +49,7 @@ class util():
         content = {}
         headers = {'Content-type': 'application/json;charset=utf8'}
         try:
-            print('url is :', url)
+            # print('url is :', url)
             response, content = http.request(url, 'GET')
             content = content.decode('utf-8')
         except httplib2.ServerNotFoundError as e:

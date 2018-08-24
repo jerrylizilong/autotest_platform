@@ -8,7 +8,7 @@ import requests
 from selenium.common.exceptions import *
 from selenium.webdriver.support.select import Select
 from app import useDB, config
-from app.core import buildCase, log, hubs, coredriver, util, extend
+from app.core import buildCase, log, hubs, coredriver, util, extend, atx_core
 from app.db import test_task_manage,test_batch_manage
 
 isUseATX = config.isUseATX
@@ -31,8 +31,10 @@ class process():
             if len(newstep[0][1]) == 1 :
                 if newstep[0][1][0]!='1':
                     package = newstep[0][1][0]
-            if runType != 'Chrome' :
-                log.log().logger.info('runtype is wrong : %s' %runType)
+            if runType == 'Android' and isUseATX:
+                # 使用 atx 执行 Android 用例
+                result, stepN, screenFileList = atx_core.atx_core().run_case(case, id, deviceList=deviceList)
+                log.log().logger.info('%s, %s, %s' % (result, stepN, screenFileList))
             else:
                 # 使用 selenium 执行 web 用例
                 if browserType !=''and devicename =='':
@@ -152,11 +154,72 @@ class process():
         pool.close()
         pool.join()
 
-    def runmain(self,test_suite_id,threadNum, runType ):
+def runmain(self, test_suite_id, threadNum, runType):
+    if runType == 'Android' and isUseATX:
+        Hubs = hubs.hubs().getDevices()
+        log.log().logger.info('Run type is ATX and usable devices are %s' % Hubs)
+    else:
         Hubs = hubs.hubs().showHubs(runType)
-        if len(Hubs) ==0:
+    if len(Hubs) == 0:
             log.log().logger.error('cannot run for no available hubs!')
+    elif runType == 'Android' and isUseATX:
+        self.atxMain()
         else:
-            self.multipleRun(util.util().getTeseCases(test_suite_id),threadNum)
+            self.multipleRun(util.util().getTeseCases(test_suite_id), threadNum)
             test_task_manage.test_task_manage().update_test_suite_check()
 
+def atxMain(self):
+    q = queue.Queue()
+    Hubs = hubs.hubs().getDevices()
+    alllist = util.util().getTeseCasesATX(all=True)
+    if len(Hubs) and len(alllist):
+        count = 0
+        threads = []
+        for i in range(len(Hubs)):
+            j = Hubs[i]
+            threads.append(MyThread(q, i, j))
+        for mt in threads:
+            mt.start()
+            log.log().logger.info("start time: %s" % time.ctime())
+
+    elif len(alllist):
+        log.log().logger.info('no device is avaible!')
+    else:
+        log.log().logger.info('no test case is needed!')
+
+
+class MyThread(threading.Thread):
+    def __init__(self, q, t, j):
+        super(MyThread, self).__init__()
+        self.q = q
+        self.t = t
+        self.j = j
+
+    def run(self):
+        list0 = util.util().getTeseCasesATX(self.j, isRunning=True)
+        if len(list0):
+            log.log().logger.info('case still running !')
+        else:
+            list = util.util().getTeseCasesATX(self.j)
+            if len(list):
+                log.log().logger.info('start test by single devices :%s ' % list[0][0])
+                self.q.put(u"打点我是第%d个线程，ip: %s, 测试用例：%s" % (self.t, self.j, list[0][0]))
+                log.log().logger.info(u"打点我是第%d个线程，ip: %s, 测试用例：%s" % (self.t, self.j, list[0][0]))
+                process().main(list[0])
+                time.sleep(2)
+            else:
+                list2 = util.util().getTeseCasesATX(all=True)
+                log.log().logger.info('current list lenth is: %s' % len(list2))
+                if len(list2):
+                    try:
+                        case = list2[self.t]
+                    except:
+                        case = list2[0]
+                        log.log().logger.info('current ip is : %s' % str(self.j))
+                    log.log().logger.info('start test by multiple devices :%s ' % case[0])
+                    self.q.put(u"我是第%d个线程，ip: %s, 测试用例：%s" % (self.t, self.j, case[0]))
+                    log.log().logger.info(u"打点我是第%d个线程，ip: %s, 测试用例：%s" % (self.t, self.j, case[0]))
+                    process().main(case, deviceList=[str(self.j)])
+                    time.sleep(3)
+                else:
+                    log.log().logger.info('no case !')
