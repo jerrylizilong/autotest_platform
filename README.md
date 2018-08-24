@@ -1,3 +1,32 @@
+
+
+update ： 2018-08-24
+# 新增android 设备使用 ATX 进行测试：
+
+## 修改：
+### 1. app/config.py 文件新增 ATXHost 配置，需要将 atx server 的地址配置到该项中
+
+## 关于 ATX server：
+请查看这篇文章的介绍：
+https://testerhome.com/topics/11738
+
+
+## android 用例组织：
+样例： 
+Android|com.your.packagename,点击|id@@com.your.packagename:id/btn_login,等待|2,点击|name@@GuestLogin,等待|5,截图,
+
+## 已封装步骤：
+相关的步骤已封装在  app/core/atx_step.py 中，具体包括：
+
+Android ： 打开指定已安装的app （通过包名）
+填写： type_text
+点击： click （by id/name/description/class）
+截图： take_screenshot
+
+由于我测试的 app 功能较为简单，目前只封装了这几个方法，如果需要可增加封装对应的方法。
+
+——————————————————————————————————————————————————————————————————————————————————————
+
 # autotest_platform
 基于python+selenium的自动化测试管理、执行平台。
 
