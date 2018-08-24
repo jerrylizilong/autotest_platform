@@ -6,6 +6,7 @@ password='password'
 database='test_auto_new'
 
 isUseATX=True
+ATXHost = 'http://localhost:8000'
 
 import os,platform
 currentPath = os.path.dirname(os.path.abspath(__file__))
