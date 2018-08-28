@@ -59,7 +59,7 @@ def edit_test_case():
         log.log().logger.info('info : %s' %info)
         id = viewutil.getInfoAttribute(info, 'id')
         log.log().logger.info('id: %s'%id)
-        return render_template("uitest/edit_test_cases.html",id=id)
+        return render_template("uitest/edit_test_cases2.html", id=id)
     if request.method == 'POST':
         info = request.form
         log.log().logger.info('info : %s' %info)
@@ -818,3 +818,45 @@ def test_batch_detail_report():
         # return render_template("uitest/test_batch_report.html", id=id)
     else:
         return render_template('test_suite.html')
+
+
+@mod.route('/test_public_test_cases.json', methods=['POST', 'GET'])
+@user.authorize
+def test_public_test_cases():
+    if request.method == 'POST':
+        log.log().logger.info('post')
+    if request.method == 'GET':
+        info = request.values
+        log.log().logger.info('info : %s' % info)
+
+        conditionList = ['id']
+        valueList = [id]
+        fieldlist = []
+        rows = 1000
+        caseList = test_case_manage.test_case_manage().show_test_public_cases()
+        log.log().logger.info(caseList)
+        data = caseList
+        data1 = jsonify({'total': len(data), 'rows': data})
+        log.log().logger.info('data1: %s' % data1)
+        return data1, {'Content-Type': 'application/json'}
+
+
+@mod.route('/test_keywords_options.json', methods=['POST', 'GET'])
+@user.authorize
+def test_keywords_options():
+    if request.method == 'POST':
+        log.log().logger.info('post')
+    if request.method == 'GET':
+        info = request.values
+        log.log().logger.info('info : %s' % info)
+
+        conditionList = ['id']
+        valueList = [id]
+        fieldlist = []
+        rows = 1000
+        caseList = test_keyword_manage.test_keyword_manage().show_test_keywords_options()
+        log.log().logger.info(caseList)
+        data = caseList
+        data1 = jsonify({'total': len(data), 'rows': data})
+        log.log().logger.info('data1: %s' % data1)
+        return data1, {'Content-Type': 'application/json'}

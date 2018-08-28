@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - edit test cases{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width"/>
+<script src="../static/jquery-1.12.4.js"></script>
+<script src="../static/scripts/util/init.js"></script>
+<script src="../static/scripts/util/util.js"></script>
+<script src="../static/scripts/core/test_case.js"></script>
+
+<script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+<link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet"/>
+
+<script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+<link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet"/>
+<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css">
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+<script>window.onload =function(){document.getElementById('btn_reset').click();}</script>
+
+{% endblock %}
+{% block content %}
+<div class="panel-body" style="padding-bottom:0px;">
+    <h1 style="text-align:center">修改测试用例</h1>
+    <form class="form-horizontal" id="new_test_case" action="/edit_test_case" method="post">
+        <!--<span style="font-size:18px;" onbeforeonloadNew="return get_edit_info({{id}})"></span>-->
+        <!--action="/save_new_test_case" method="post"-->
+        <div class="form-group">
+            <label for="type" class="col-sm-2 control-label">用例ID</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control readonly" id="id" name="id" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="type" class="col-sm-2 control-label">用例类型</label>
+            <div class="col-sm-10">
+                <select class="form-control required" name="type" id="type"
+                        onchange="if(this.value != '') setModule(this.options[this.selectedIndex].value);">
+                    <option value="">-请选择-</option>
+                    <option value="普通用例">普通用例</option>
+                    <option value="公共用例">公共用例</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="module" class="col-sm-2 control-label">所属模块</label>
+            <div class="col-sm-10">
+                <select class="form-control required" name="module" id="module">
+                    <option value="">-请选择-</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">名称</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control required" id="name" name="name"
+                       placeholder="请输入用例名称">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="steps" class="col-sm-2 control-label">步骤</label>
+            <div class="col-sm-10">
+                <!--<button id="editButton" class="btn btn-default" href="javascript:void(0)" onclick="open()">编辑</button>-->
+                <a href="javascript:void(0)" onclick="openEditStepWindow()">步骤生成器</a>
+                <textarea class="form-control required" id="steps" name="steps" placeholder="请输入步骤" cols="30"
+                          rows="5"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description" class="col-sm-2 control-label">描述</label>
+            <div class="col-sm-10">
+                <input type="longtext" class="form-control" id="description" name="description"
+                       placeholder="请输入描述">
+            </div>
+            <div id="editStep" class="white_content">
+                <h4>步骤： </h4>
+                <textarea type="longtext" class="form-control" id="step" readonly="readonly" cols="10"
+                          rows="10"></textarea>
+                <table id="stepsTable" border="2" cellspacing="10">
+                    <thead>
+                    <tr>
+                        <th>操作</th>
+                        <th>关键字</th>
+                        <th>参数1</th>
+                        <th>参数2</th>
+                        <th>参数3</th>
+                        <th>参数4</th>
+                        <th>步骤</th>
+                    </tr>
+                    </thead>
+                    <tbody id='tbody'>
+                </table>
+                <a href="javascript:void(0)" onclick="SaveAndCloseEditStepWindow()">保存</a>
+                <a href="javascript:void(0)" onclick="closeEditStepWindow()">关闭</a>
+            </div>
+            <div id="fade" class="black_overlay"></div>
+
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button id="submitButton" class="btn btn-default" onclick="submitAddForm()">保存</button>
+                <button id="btn_add" type="button" class="btn btn-default"
+                        onclick="window.location.href=('/test_cases')">返回
+                </button>
+                <button id="btn_reset" type="button" class="btn btn-default" onclick="return get_edit_info({{id}})">重置
+                </button>
+            </div>
+        </div>
+
+        <style>
+.error{
+	color:red;
+}
+.black_overlay{ display: none; position: absolute; top: 0%; left: 20%; width: 70%; height: 90%; background-color: black; z-index:1001; -moz-opacity: 0.6; opacity:.60; filter: alpha(opacity=60); }
+.white_content { display: none; position: absolute; top: 0%; left: 20%; width: 70%; height: 90%; padding: 16px; border: 6px solid orange; background-color: white; z-index:1002; overflow: auto; }
+
+        </style>
+    </form>
+</div>
+{% endblock %}

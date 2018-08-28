@@ -11,6 +11,7 @@
 
     <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
     <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css">
 
     <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
     <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
@@ -51,6 +52,7 @@
             <div class="form-group">
                 <label for="steps" class="col-sm-2 control-label">步骤</label>
                     <div class="col-sm-10">
+                        <a href="javascript:void(0)" onclick="openEditStepWindow()">步骤生成器</a>
                              <textarea class="form-control required" id="steps" name="steps" placeholder="请输入步骤" cols="30" rows="10"></textarea>
                     </div>
             </div>
@@ -60,6 +62,28 @@
                         <input type="longtext" class="form-control" id="description" name="description"
                                placeholder="请输入描述">
                     </div>
+                <div id="editStep" class="white_content">
+                    <h4>步骤： </h4>
+                    <textarea type="longtext" class="form-control" id="step" readonly="readonly" cols="10"
+                              rows="10"></textarea>
+                    <table id="stepsTable" border="2" cellspacing="10">
+                        <thead>
+                        <tr>
+                            <th>操作</th>
+                            <th>关键字</th>
+                            <th>参数1</th>
+                            <th>参数2</th>
+                            <th>参数3</th>
+                            <th>参数4</th>
+                            <th>步骤</th>
+                        </tr>
+                        </thead>
+                        <tbody id='tbody'>
+                    </table>
+                    <a href="javascript:void(0)" onclick="SaveAndCloseEditStepWindow()">保存</a>
+                    <a href="javascript:void(0)" onclick="closeEditStepWindow()">关闭</a>
+                </div>
+                <div id="fade" class="black_overlay"></div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
@@ -72,6 +96,9 @@
 .error{
 	color:red;
 }
+.black_overlay{ display: none; position: absolute; top: 0%; left: 20%; width: 70%; height: 90%; background-color: black; z-index:1001; -moz-opacity: 0.6; opacity:.60; filter: alpha(opacity=60); }
+.white_content { display: none; position: absolute; top: 0%; left: 20%; width: 70%; height: 90%; padding: 16px; border: 6px solid orange; background-color: white; z-index:1002; overflow: auto; }
+
 </style>
         </form>
     </div>

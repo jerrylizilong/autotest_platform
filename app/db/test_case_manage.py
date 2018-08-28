@@ -44,6 +44,17 @@ class test_case_manage:
         resultlist = useDB.useDB().search(sql)
         return resultlist
 
+    def show_test_public_cases(self):
+        results = []
+        sql = 'select name from test_case where status = 1 and isPublicFunction = 1 ;'
+        cases = useDB.useDB().search(sql)
+        print(cases)
+        log.log().logger.info('cases : %s' % cases)
+        for i in range(len(cases)):
+            results.append(cases[i][0])
+        return results
+
+
     def show_test_cases(self,conditionList, valueList, fieldlist,rows):
         if len(fieldlist)==0:
             fieldlist = ['id', 'module', 'name', 'steps', 'description','isPublicFunction']
@@ -140,5 +151,19 @@ class test_case_manage:
             results.append(result)
         return results
 
-
-
+    #
+    # def show_test_keywords(self,conditionList, valueList, fieldlist,rows):
+    #     results = []
+    #     sql = 'select id, keyword, paraCount, template, example,description from test_keyword where keyword like "%' + str(valueList[0]) + '%" order by id desc limit '+ str(rows)+';'
+    #     cases = useDB.useDB().search(sql)
+    #     log.log().logger.info('cases : %s'%cases)
+    #     for i in range(len(cases)):
+    #         result = {}
+    #         result['id'] = cases[i][0]
+    #         result['keyword'] = cases[i][1]
+    #         result['paraCount'] = cases[i][2]
+    #         result['template'] = cases[i][3]
+    #         result['example'] = cases[i][4]
+    #         result['description'] = cases[i][5]
+    #         results.append(result)
+    #     return results

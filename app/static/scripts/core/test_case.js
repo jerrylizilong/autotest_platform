@@ -346,3 +346,314 @@ function delete_test_case(active_id)
           }
 });
 }
+
+function openEditStepWindow(){
+
+    document.getElementById('editStep').style.display='block';
+    document.getElementById('fade').style.display='block';
+    var options = keywordOption();
+//    alert(options);
+
+    var content = $("#steps").val();
+    if(content==''){content='Chrome'}
+    $("#step").val();
+    $("#step").val(content);
+    var steps = content.split(',');
+    var steprows = steps.length;
+
+    for(var i=0;i<steprows;i++){
+        addBody(steps[i],i+1,options,0);
+    }
+}
+
+function closeEditStepWindow(){
+
+    var tb_step=document.getElementById('stepsTable');
+    var tbodies= document.getElementsByTagName("tbody");
+    tb_step.removeChild(tbodies[0]);
+    var tbody=document.createElement('tbody');
+    tb_step.appendChild(tbody)
+    document.getElementById('editStep').style.display='none';
+    document.getElementById('fade').style.display='none';
+
+}
+
+
+function addBody(content,order,options,isInsert){
+//    alert(options);
+
+    var tbody=document.getElementsByTagName('tbody')[0];
+//    alert(isInsert);
+    if(isInsert==1){
+//        alert('insert new:'+order);
+        var table = document.getElementById('stepsTable');
+        var tr=table.insertRow(order);
+        var ran = Math.floor(Math.random()*(100-10+1)+10);
+        order = 'new_'+order+ran;
+    }else{
+        var tr=document.createElement('tr');
+    }
+
+    var words = content.split('|');
+    var tdoperate=document.createElement('td')
+    var addBtn=document.createElement('a');
+    var delBtn=document.createElement('a');
+    var copyBtn=document.createElement('a');
+
+    addBtn.setAttribute("onclick","addRow(this);");
+    addBtn.setAttribute("class","btn");
+    var addIcon=document.createElement('i');
+    addIcon.setAttribute("class","fa fa-plus");
+    addBtn.appendChild(addIcon);
+
+    delBtn.setAttribute("onclick","delRow(this);");
+    delBtn.setAttribute("class","btn");
+    var delIcon=document.createElement('i');
+    delIcon.setAttribute("class","fa fa-minus");
+    delBtn.appendChild(delIcon);
+
+    copyBtn.setAttribute("onclick","copyRow(this,'"+order+"');");
+    copyBtn.setAttribute("class","btn");
+    var copyIcon=document.createElement('i');
+    copyIcon.setAttribute("class","fa fa-clone");
+    copyBtn.appendChild(copyIcon);
+
+    tdoperate.appendChild(addBtn);
+    tdoperate.appendChild(delBtn);
+    tdoperate.appendChild(copyBtn);
+    tr.appendChild(tdoperate);
+
+    var tdvalue=document.createElement('td')
+//    tdvalue.innerHTML=words[0];
+    var select = selectOptions(options,words[0])
+    select.setAttribute("id","td_keyword_"+order);
+    select.setAttribute("onchange","if(this.value != '') changeValue(this,'"+order+"');");
+    tdvalue.appendChild(select);
+    tdvalue.setAttribute("onchange","change(this,"+order+");");
+//    $("#td_keyword_"+order).find("option[value='"+words[0]+"']").attr("selected",true);
+    tr.appendChild(tdvalue);
+    if(words.length==1){
+      for(var i=0;i<4;i++){
+      var tdvalue=document.createElement('td')
+      tdvalue.contentEditable="true";
+      tdvalue.setAttribute("class","td_para_"+order);
+      tdvalue.setAttribute("onKeyUp","change(this,'"+order+"');");
+      tdvalue.innerHTML='';
+      tr.appendChild(tdvalue);
+    }
+    }else{
+
+    var steps = words[1].split('@@');
+    for(var i=0;i<4;i++){
+      var tdvalue=document.createElement('td')
+      tdvalue.contentEditable="true";
+      tdvalue.setAttribute("class","td_para_"+order);
+      tdvalue.setAttribute("onKeyUp","change(this,"+order+");");
+      if(i<steps.length){tdvalue.innerHTML=steps[i];}
+      else{tdvalue.innerHTML='';}
+       tr.appendChild(tdvalue);
+    }
+
+    }
+    var tdvalue=document.createElement('td')
+    tdvalue.contentEditable="true";
+    tdvalue.setAttribute("class","td_content");
+    tdvalue.setAttribute("id","td_content_"+order);
+    if(content!=''){
+        tdvalue.innerHTML=content;
+        }else{
+        var newkeyword = document.getElementById('td_keyword_'+order);
+        tdvalue.innerHTML=newkeyword.options[newkeyword.selectedIndex].value;
+        }
+    tr.appendChild(tdvalue);
+
+     if(isInsert==0){tbody.appendChild(tr);}
+console.log('body is:'+tbody);
+
+}
+
+function change(obj,order){
+obj.textContent.change;
+var content = document.getElementById('td_content_'+order);
+var keyword = document.getElementById('td_keyword_'+order);
+var paras= document.getElementsByClassName("td_para_"+order);
+var newvalue = keyword.options[keyword.selectedIndex].value;
+var methodSelect = paras[0].getElementsByClassName('method');
+//alert(methodSelect.length);
+if(methodSelect.length==1){
+    method = methodSelect[0].options[methodSelect[0].selectedIndex].value;
+}else{ method = paras[0].textContent;}
+//alert(method);
+if(method!=''){
+    newvalue = newvalue+'|'+method;
+}
+
+for(var i=1;i<paras.length;i++){
+    if(paras[i].textContent!=''){
+        newvalue = newvalue+'@@'+paras[i].textContent;
+        }
+    }
+
+content.innerHTML = newvalue;
+}
+
+function SaveAndCloseEditStepWindow(){
+    var stepsvalue = '';
+    var contents= document.getElementsByClassName("td_content");
+    for(var i=0;i<contents.length;i++){
+        if(i!=0){stepsvalue = stepsvalue+','+contents[i].textContent;}
+        else{stepsvalue = stepsvalue+contents[i].textContent;}
+    }
+
+//    alert(stepsvalue);
+    $("#steps").val(stepsvalue);
+    closeEditStepWindow();
+
+}
+
+
+function selectOptions(options,defaultOption){
+//alert(options);
+var select = document.createElement('select');
+for(var i=0;i<options.length;i++){
+    var option = document.createElement('option');
+    option.value = options[i];
+    option.text = options[i];
+    if(options[i]==defaultOption){
+        option.setAttribute("selected","true");
+    }
+    select.appendChild(option)
+}
+return select;
+}
+
+
+function keywordOption(){
+
+var options = []
+
+ $.ajax(
+    {
+      url: "/test_keywords_options.json",
+      type: "get",
+      dataType:"json",
+      async : false,
+      beforeSend:function()
+      {
+        return true;
+      },
+      success:function(data)
+      {
+//        alert(data.rows);
+        options= data.rows;
+
+      },
+      error:function()
+      {
+        alert('请求出错');
+      },
+      complete:function()
+      {
+        // $('#tips').hide();
+      }
+});
+//alert('options are :'+options);
+return options;
+}
+
+
+function getPublicFunctions(){
+
+var cases = []
+
+ $.ajax(
+    {
+      url: "/test_public_test_cases.json",
+      type: "get",
+      dataType:"json",
+      async : false,
+      beforeSend:function()
+      {
+        return true;
+      },
+      success:function(data)
+      {
+//        alert(data.rows);
+        cases= data.rows;
+
+      },
+      error:function()
+      {
+        alert('请求出错');
+      },
+      complete:function()
+      {
+        // $('#tips').hide();
+      }
+});
+//alert('options are :'+options);
+return cases;
+}
+
+
+function addRow(ojb){
+    var n=ojb.parentNode.parentNode.rowIndex+1;
+//    alert(n);
+    var options = keywordOption();
+    addBody('',n,options,1);
+}
+
+
+function delRow(ojb){
+var n=ojb.parentNode.parentNode.rowIndex;
+var table = document.getElementById('stepsTable');
+var tr=table.deleteRow(n);
+}
+
+
+
+function copyRow(ojb,order){
+    var n=ojb.parentNode.parentNode.rowIndex+1;
+    var content = document.getElementById('td_content_'+order).textContent;
+//    alert(content);
+    var options = keywordOption();
+    addBody(content,n,options,1);
+}
+
+function changeValue(obj,order){
+//setModule(obj.options[obj.selectedIndex].value);
+var keyword = obj.options[obj.selectedIndex].value;
+var method = document.getElementsByClassName('td_para_'+order)[0];
+if(['点击','填写','选择','填写日期','选择全部','验证文字','验证文字非','点击索引'].indexOf(keyword)!= -1){
+//    changeBy(keyword,order);
+    var methodSelect = method.getElementsByClassName('method');
+//        alert(methodSelect.length);
+        if(methodSelect.length==0){
+               var select = selectOptions(['id','name','class','xpath','text','css'],'id');
+                select.setAttribute('onchange','change(this,"'+order+'");');
+                select.setAttribute("class","method");
+                method.textContent='';
+                method.appendChild(select);
+        }
+
+}else if(keyword=='公共方法'){
+//    changeBy(keyword,order);
+    var publicSelect = method.getElementsByClassName('method');
+//        alert(methodSelect.length);
+        var publicFuntions = getPublicFunctions();
+        if(publicSelect.length==0){
+               var select = selectOptions(publicFuntions,publicFuntions[0]);
+                select.setAttribute('onchange','change(this,"'+order+'");');
+                select.setAttribute("class","method");
+                method.textContent='';
+                method.appendChild(select);
+        }
+}else{
+    var methodSelect = method.getElementsByClassName('method');
+    if(methodSelect.length==1){
+        method.removeChild(methodSelect[0]);
+    }
+}
+change(obj,order);
+
+}
