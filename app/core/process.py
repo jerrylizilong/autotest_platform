@@ -161,7 +161,7 @@ def runmain(self, test_suite_id, threadNum, runType):
     else:
         Hubs = hubs.hubs().showHubs(runType)
     if len(Hubs) == 0:
-            log.log().logger.error('cannot run for no available hubs!')
+        log.log().logger.error('cannot run for no available hubs!')
     elif runType == 'Android' and isUseATX:
         self.atxMain()
         else:
