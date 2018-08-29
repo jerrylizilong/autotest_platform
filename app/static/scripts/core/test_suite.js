@@ -1,9 +1,24 @@
 
+// submit form
+//function submitAddForm() {
+//   $("#new_test_suite").validate();
+//   $.validator.setDefaults({
+//        submitHandler: function() {
+//            document.getElementById("new_test_suite").submit();
+//    }
+//});
+//   }
+
+
 $(function () {
 
     //1.初始化Table
     var oTable = new TableInit();
     oTable.Init();
+
+//    //2.初始化Button的点击事件
+//    var oButtonInit = new ButtonInit();
+//    oButtonInit.Init();
 
 });
 
@@ -117,11 +132,29 @@ window.operateEvents = {
     return oTableInit;
 };
 
+//
+//var ButtonInit = function () {
+//    var oInit = new Object();
+//    var postdata = {};
+//
+//    oInit.Init = function () {
+//        //初始化页面上面的按钮事件
+//    };
+//
+//    return oInit;
+//};
 
 function searchTestSuite(){
     var $tb_departments = $('#tb_test_suites');
     $tb_departments.bootstrapTable('refresh', {url: '/test_suite.json'});
 }
+
+//
+//function selectOnchang(obj){
+////获取被选中的option标签选项
+//var value = obj.options[obj.selectedIndex].value;
+////alert(value);
+//}
 
 
  // 编辑表单
@@ -238,6 +271,19 @@ function delete_test_suite(active_id)
 function add_test_suite()
 
   {
+
+//    var $form = $("#new_test_suite");
+//
+//    var data = $form.data('bootstrapValidator');
+//    if (data) {
+//    // 修复记忆的组件不验证
+//        data.validate();
+//
+//        if (!data.isValid()) {
+//            return false;
+//        }
+//    }
+
     // 异步提交数据到action/add_action.php页面
     $.ajax(
         {
@@ -252,19 +298,19 @@ function add_test_suite()
           success:function(data)
           {
             var data=data;
-            alert(data);
-            alert(data.code);
             if(data.code == 200)
             {
-//             alert('新增成功，请关联用例!');
-             window.location.href=('/test_suites');
+             alert('新增成功，请关联用例!');
+             window.location.href=('/attach_test_batch?test_suite_id='+data.ext);
             }
             else
-            {window.location.href=('/test_suites');
+            {
+              alert(data.msg);
             }
           },
           error:function()
-          {window.location.href=('/test_suites');
+          {
+            alert('请求出错');
           },
           complete:function()
           {
@@ -275,6 +321,9 @@ function add_test_suite()
     return false;
   }
 
+//function runtest1(id){
+//alert(id);
+//}
 
  function runtest(test_suite_id){
          $.ajax(
