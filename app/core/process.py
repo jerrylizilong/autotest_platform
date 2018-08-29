@@ -154,16 +154,16 @@ class process():
         pool.close()
         pool.join()
 
-def runmain(self, test_suite_id, threadNum, runType):
-    if runType == 'Android' and isUseATX:
-        Hubs = hubs.hubs().getDevices()
-        log.log().logger.info('Run type is ATX and usable devices are %s' % Hubs)
-    else:
-        Hubs = hubs.hubs().showHubs(runType)
-    if len(Hubs) == 0:
-        log.log().logger.error('cannot run for no available hubs!')
-    elif runType == 'Android' and isUseATX:
-        self.atxMain()
+    def runmain(self, test_suite_id, threadNum, runType):
+        if runType == 'Android' and isUseATX:
+            Hubs = hubs.hubs().getDevices()
+            log.log().logger.info('Run type is ATX and usable devices are %s' % Hubs)
+        else:
+            Hubs = hubs.hubs().showHubs(runType)
+        if len(Hubs) == 0:
+            log.log().logger.error('cannot run for no available hubs!')
+        elif runType == 'Android' and isUseATX:
+            self.atxMain()
         else:
             self.multipleRun(util.util().getTeseCases(test_suite_id), threadNum)
             test_task_manage.test_task_manage().update_test_suite_check()
