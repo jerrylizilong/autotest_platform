@@ -111,7 +111,7 @@ class buildCase(object):
 
     #根据编号查找公共用例
     def read_public_case(self,caseNo) :
-        sql = 'select steps from test_case where isPublicFunction = "1" and name = "'+caseNo+'";'
+        sql = 'select steps from test_case where isPublicFunction = "1" and status = 1 and name = "'+caseNo+'";'
         case = useDB.useDB().search(sql)
         if len(case):
             caseList = []
