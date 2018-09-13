@@ -41,8 +41,8 @@ python 3.4 以上
 基于flask进行开发，进行用例、用例集、步骤等的增删改查等功能。
 
 ## 2. 启动core服务：
-```python
-python app/core/coreservice.py
+```
+python core.py
 ```
 
 
