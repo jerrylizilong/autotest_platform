@@ -53,12 +53,13 @@ class test_keyword_manage:
         useDB.useDB().insert(sql)
         return 1
 
+
     def show_test_keywords_options(self):
         results = []
-        sql = 'select keyword from test_keyword where status = 1 ;'
+        sql = 'select keyword from test_keyword where status = 1 order by keyword ;'
         cases = useDB.useDB().search(sql)
-        print(cases)
-        log.log().logger.info('cases : %s' % cases)
+        # print(cases)
+        log.log().logger.info('cases : %s'%cases)
         for i in range(len(cases)):
             results.append(cases[i][0])
         return results

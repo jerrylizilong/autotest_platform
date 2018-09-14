@@ -1,4 +1,4 @@
-from app import useDB, config
+from app import useDB,config
 from app.core import log,util
 import json
 class hubs():
@@ -70,7 +70,7 @@ class hubs():
                 else:
                     self.updateHub(hub[0],hub[1],'0','0')
         if len(hubs) == 0:
-            log.log().logger.error('no hubs is availabe!')
+            log.log().logger.debug('no hubs is availabe!')
         return hubs
 
     def checkHubs(self):
@@ -99,7 +99,7 @@ class hubs():
         else:
             sql = "select id, ip, port, androidConnect,status from test_hubs;"
         list = useDB.useDB().search(sql)
-        log.log().logger.info('cases : %s' %list)
+        log.log().logger.debug('cases : %s' %list)
         results = []
         for i in range(len(list)):
             result = {}
@@ -112,7 +112,7 @@ class hubs():
         return results
 
     def getDevices(self):
-        url = config.ATXHost + '/list'
+        url = config.ATXHost+'/list'
         response, content = util.util().send(url)
         content = json.loads(content)
         deviceList = []
@@ -120,22 +120,21 @@ class hubs():
             if device['present']:
                 deviceList.append(device['ip'] + ':7912')
             else:
-                # log.log().logger.info(device['ip'] + ' is not ready!')
-                pass
+                log.log().logger.debug(device['ip'] + ' is not ready!')
         return deviceList
 
-    # 获取设备列表信息
+    #获取设备列表信息
     def getDevicesList(self):
-        url = config.ATXHost + '/list'
+        url = config.ATXHost+'/list'
         response, content = util.util().send(url)
         content = json.loads(content)
-        deviceLists = []
+        deviceLists=[]
         for device in content:
             deviceList = {}
             if device['present']:
-                deviceList["ip"] = device['ip'] + ':7912'
-                deviceList["model"] = device['model']
+                deviceList["ip"]=device['ip'] + ':7912'
+                deviceList["model"]=device['model']
                 deviceLists.append(deviceList)
             else:
-                log.log().logger.info(device['ip'] + ' is not ready!')
+                log.log().logger.debug(device['ip'] + ' is not ready!')
         return deviceLists

@@ -15,17 +15,13 @@ class extend():
         elif 'text' in method:
             method = By.PARTIAL_LINK_TEXT
         elements = driver.find_elements(by=method,value=value)
-        if len(elements)==0:
-            return None
-        elif len(elements)==1:
-            return elements[0]
-        elif is_displayed:
+        if len(elements)>0 and is_displayed:
             for element in elements:
                 if element.is_displayed():
                     return element
-            return None
-        else:
-            return elements[0]
+                else:
+                    elements.remove(element)
+        return elements[0]
 
     def find_elements(self,driver,para_list):
         method, value = para_list[0], para_list[1]
@@ -37,7 +33,6 @@ class extend():
             method = By.PARTIAL_LINK_TEXT
         elements = driver.find_elements(by=method,value=value)
         return elements
-
 
     def switchIframe(self,driver,para_list):
         method, value = para_list[0], para_list[1]
@@ -54,72 +49,42 @@ class extend():
         time.sleep(2)
 
     def screenshot(self,driver,id,screenFileList,isError=False):
-        result = 2
+        result = '2'
         if isError:
             fileName, fileName1 = util.util().screenshot('error', id)
         else:
             fileName, fileName1 = util.util().screenshot('normal', id)
-        try:
-            # print(fileName)
-            driver.save_screenshot(fileName)
-            screenFileList.append(fileName1)
-            result = 1
-        except requests.exceptions.ConnectionError as e:
-            log.log().logger.error(e)
-        except selenium.common.exceptions.WebDriverException as e:
-            log.log().logger.error(e)
+        log.log().logger.debug(fileName)
+        driver.save_screenshot(fileName)
+        screenFileList.append(fileName1)
+        result = '1'
         return result, screenFileList
 
     def assert_text(self,driver,text):
-        try:
-            elements = driver.find_elements(by='xpath', value="//*[contains(.,'" + text + "')]")
-        except NoSuchElementException as e:
-            log.log().logger.info(e)
-            elements = []
-        if len(elements) > 0:
-            result = '1'
-        else:
-            result = '2'
-        log.log().logger.info('verify result is : %s' % result)
-        return result
+        elements = driver.find_elements(by='xpath', value="//*[contains(.,'" + text + "')]")
+        assert len(elements)
 
-    def assert_title(self, driver, text):
-        if text in driver.title:
-            result = '1'
-        else:
-            result = '2'
-        log.log().logger.info('verify result is : %s' % result)
-        return result
-
+    def assert_title(self,driver,text):
+        log.log().logger.info('目标文本：%s， 期待包含文本：%s' % (driver.title, text))
+        assert text in driver.title
 
     def assert_element_text(self,driver,para_list,isNot=False):
-        result = '2'
-        para_list=str(para_list).split(',')
+        # para_list=str(para_list).split(',')
+        text0 = ''
         if len(para_list)==3:
             method, value, text = para_list[0],para_list[1],para_list[2]
-            text0 = ''
-            try:
-                element = self.find_element(driver, [method, value])
-                text0 = element.text
-            except NoSuchElementException as e:
-                log.log().logger.info(e)
-            except AttributeError as e:
-                log.log().logger.info(e)
+            element = self.find_element(driver, [method, value])
+            text0 = element.text
             if not len(text0):
-                try:
-                    text0=element.get_attribute('value')
-                except NoSuchElementException as e:
-                    log.log().logger.info(e)
-                except AttributeError as e:
-                    log.log().logger.info(e)
-            log.log().logger.info('目标文本：%s， 期待文本：%s' %(text0,text))
-            if (text in str(text0)):
-                result = '1'
+                text0=element.get_attribute('value')
+            # log.log().logger.info('目标文本：%s， 期待文本：%s' % (text0,text))
         if isNot:
-            if result !=1:
-                result =1
-        log.log().logger.info('verify result is : %s' % result)
-        return result
+            log.log().logger.info('目标文本：%s， 期待不包含文本：%s' % (text0, text))
+            assert (text in str(text0))==False
+        else:
+            log.log().logger.info('目标文本：%s， 期待包含文本：%s' % (text0, text))
+            assert (text in str(text0))
+
 
 
     def select(self,driver,para_list):
@@ -135,7 +100,7 @@ class extend():
                     option_method = 'visible_text'
                 comd = 'Select(driver.find_element_by_%s("%s")).select_by_%s("%s")' % (
                 method, value, option_method, option_value)
-                log.log().logger.info(comd)
+                log.log().logger.debug(comd)
                 exec(comd)
         time.sleep(2)
 
@@ -175,39 +140,27 @@ class extend():
             driver.find_element_by_partial_link_text(text).click()
         time.sleep(2)
 
-
     def click_text(self,driver,text):
         elements = driver.find_elements(by='xpath', value="//*[contains(.,'" + text + "')]")
         for element in elements:
-            try:
-                element.click()
-            except NoSuchElementException as e:
-                log.log().logger.info(e)
+            element.click()
         time.sleep(2)
 
     def try_click(self,driver,para_list):
-        # para_list=str(para_list).split(',')
         if len(para_list)==2:
             method, value = para_list[0],para_list[1]
-            # print(value)
-            element = self.find_element(driver, [method, value])
-            if element:
-                for i in range(3):
-                    try:
-                        element.click()
-                    except NoSuchElementException as e:
-                        log.log().logger.info(e)
+            for i in range(3):
+                try:
+                    self.find_element(driver, [method, value]).click()
+                    break
+                except:
+                    pass
         time.sleep(2)
 
     def click_index(self,driver,para_list):
         method, value, index = para_list[0], para_list[1], para_list[2]
         elements = self.find_elements(driver, [method, value])
-        if len(elements):
-            for i in range(3):
-                try:
-                    elements[int(index)].click()
-                except NoSuchElementException as e:
-                    log.log().logger.info(e)
+        elements[int(index)].click()
         time.sleep(2)
 
     def fill_on_date(self,driver,para_list):
@@ -223,3 +176,25 @@ class extend():
             t=2
         else:
             time.sleep(int(t))
+
+
+    def move_to(self,driver,para_list):
+        if len(para_list)==2:
+            method, value = para_list[0],para_list[1]
+            for i in range(3):
+                try:
+                    from selenium.webdriver.common.action_chains import ActionChains
+                    ActionChains(driver).move_to_element(to_element=self.find_element(driver, [method, value])).perform()
+                    break
+                except:
+                    pass
+        time.sleep(2)
+
+    def fill(self,driver,para_list,text, is_displayed = True):
+        element = self.find_element(driver, para_list,is_displayed)
+        # element = driver.find_element(by=para_list[0],value=para_list[1])
+        element.clear()
+        element.send_keys(text)
+
+    def fill_file(self,driver,para_list,text, is_displayed = False):
+        self.fill(driver,para_list,text, is_displayed = False)

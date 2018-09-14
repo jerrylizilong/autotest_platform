@@ -25,19 +25,19 @@ class util():
         if platform.system() == 'Windows':
             screen_shot_path = config.screen_shot_path
             screen_shot_path1 = 'static\\screenshot\\'
-            log.log().logger.info(screen_shot_path)
-            normalfilename =  screen_shot_path + 'normalScreenShot\\'  + str(caseNo)+'_success' + nowTime + '.jpg'
-            errorfilename =  screen_shot_path + 'errorScreenShot\\'  + str(caseNo)+'_error' + nowTime + '.jpg'
-            normalfilename1 =  '\\' +screen_shot_path1 + '\\' + 'normalScreenShot' + '\\' + str(caseNo)+'_success' + nowTime + '.jpg'
-            errorfilename1 = '\\' + screen_shot_path1 + '\\' + 'errorScreenShot' + '\\' + str(caseNo)+'_error' + nowTime + '.jpg'
+            log.log().logger.debug(screen_shot_path)
+            normalfilename =  screen_shot_path + 'normalScreenShot\\'  + str(caseNo)+'_success' + nowTime + '.png'
+            errorfilename =  screen_shot_path + 'errorScreenShot\\'  + str(caseNo)+'_error' + nowTime + '.png'
+            normalfilename1 =  '\\' +screen_shot_path1 + '\\' + 'normalScreenShot' + '\\' + str(caseNo)+'_success' + nowTime + '.png'
+            errorfilename1 = '\\' + screen_shot_path1 + '\\' + 'errorScreenShot' + '\\' + str(caseNo)+'_error' + nowTime + '.png'
         else:
             screen_shot_path = config.screen_shot_path
             screen_shot_path1 = 'static/screenshot'
-            normalfilename = screen_shot_path  + 'normalScreenShot' + '/'+ str(caseNo)+'_success' + nowTime + '.jpg'
-            errorfilename = screen_shot_path  + 'errorScreenShot' + '/' + str(caseNo)+'_error' + nowTime + '.jpg'
+            normalfilename = screen_shot_path  + 'normalScreenShot' + '/'+ str(caseNo)+'_success' + nowTime + '.png'
+            errorfilename = screen_shot_path  + 'errorScreenShot' + '/' + str(caseNo)+'_error' + nowTime + '.png'
             normalfilename1 =  '/' + screen_shot_path1 + '/' + 'normalScreenShot' + '/' + str(
-                caseNo) + '_success' + nowTime + '.jpg'
-            errorfilename1 =  '/' + screen_shot_path1 + '/' + 'errorScreenShot' + '/' + str(caseNo) + '_error' + nowTime + '.jpg'
+                caseNo) + '_success' + nowTime + '.png'
+            errorfilename1 =  '/' + screen_shot_path1 + '/' + 'errorScreenShot' + '/' + str(caseNo) + '_error' + nowTime + '.png'
         if screenShotType == 'error':
             return errorfilename,errorfilename1
         else:

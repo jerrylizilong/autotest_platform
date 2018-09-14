@@ -26,6 +26,8 @@ class buildCase(object):
         else:
             elementTemplate = ''
             element = ''
+        if len(paraValue) == paraCount-1:
+            paraValue.append('')
         if len(paraValue) in (paraCount, paraCount+1) and paraCount > 0 and paraCount < 5:
             if paraValue[0] == 'css':
                 paraValue[0] = 'css_selector'
@@ -73,8 +75,11 @@ class buildCase(object):
 
     def build_case(self,keyword,steps):
         paraCount,template, elementTemplate = keywords.keywords().getPara(keyword)
-        conmod, element = self.convertToComend(template,paraCount,steps,elementTemplate)
-        return conmod,element
+        if paraCount=='':
+            return '',''
+        else:
+            conmod, element = self.convertToComend(template,paraCount,steps,elementTemplate)
+            return conmod,element
 
 
     def readPublic(self,caseList0) :
@@ -155,4 +160,4 @@ class buildCase(object):
                 newstep.append(step0)
         else:
             newstep=''
-        return newstep
+        return newstep,case

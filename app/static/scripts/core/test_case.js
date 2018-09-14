@@ -624,7 +624,7 @@ function changeValue(obj,order){
 //setModule(obj.options[obj.selectedIndex].value);
 var keyword = obj.options[obj.selectedIndex].value;
 var method = document.getElementsByClassName('td_para_'+order)[0];
-if(['点击','填写','选择','填写日期','选择全部','验证文字','验证文字非','点击索引'].indexOf(keyword)!= -1){
+if(['点击','填写','选择','填写日期','填写文件','选择全部','验证文字','验证文字非','点击索引'].indexOf(keyword)!= -1){
 //    changeBy(keyword,order);
     var methodSelect = method.getElementsByClassName('method');
 //        alert(methodSelect.length);

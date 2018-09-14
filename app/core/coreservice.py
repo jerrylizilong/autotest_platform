@@ -5,7 +5,7 @@ from app.db import test_task_manage
 
 
 def main():
-    test_task_manage.test_task_manage().update_test_suite_check()
+    # test_task_manage.test_task_manage().update_test_suite_check()
     idList = test_task_manage.test_task_manage().test_suite_list()
     idList1 = test_task_manage.test_task_manage().test_case_list()
     # log.log().logger.info(idList)
@@ -18,25 +18,31 @@ def main():
             if runType =='0' or runType =='Android':
                 threadNum = 1
                 runType ='Android'
+            elif runType =='1' or runType =='iOS':
+                threadNum = 1
+                runType ='iOS'
             elif  runType =='2' or runType =='Chrome':
                 threadNum = 6
                 runType = 'Chrome'
             else:
                 threadNum = 0
                 runType = ''
-            if runType == '':
-                test_task_manage.test_task_manage().update_test_suite(test_suite_id, '3')
-            else:
-                test_task_manage.test_task_manage().update_test_suite(test_suite_id, '2')
-                process.process().runmain(test_suite_id, threadNum, runType)
+            # if runType == '':
+            #     test_task_manage.test_task_manage().update_test_suite(test_suite_id, '3')
+            # else:
+                # test_task_manage.test_task_manage().update_test_suite(test_suite_id, '2')
+            process.process().runmain(test_suite_id, threadNum, runType)
+                # test_task_manage.test_task_manage().update_test_suite_check()
         result1 = 0
     else:
+        # log.log().logger.info('no test is available!')
         result1=1
     if len(idList1):
         threadNum = 1
         process.process().multipleRun(idList1, threadNum)
         result2 = 0
     else:
+        # log.log().logger.info('no test is available!')
         result2=1
     result = result1 +result2
     return result

@@ -52,14 +52,13 @@ class mysqlDB(object):
     def connect(self):
         # change root password to yours:
         import mysql.connector
-
         conn = mysql.connector.connect(host=config.host,port=config.port, user=config.user, password=config.password, database=config.database)
         return conn
 
     def search(self, sql):
         conn = self.connect()
         cursor = conn.cursor()
-        log.log().logger.info(sql)
+        # log.log().logger.info(sql)
         cursor.execute(sql)
         values = cursor.fetchall()
         # log.log().logger.info('values1 :', values)
@@ -68,7 +67,7 @@ class mysqlDB(object):
         return values
 
     def insert(self, sql):
-        log.log().logger.info(sql)
+        log.log().logger.debug(sql)
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(sql)
@@ -76,11 +75,11 @@ class mysqlDB(object):
         try:
             conn.commit()
         except :
-            log.log().logger.info('commit error')
+            log.log().logger.error('commit error')
         conn.close()
 
     def excutesql(self, sql):
-        log.log().logger.info(sql)
+        log.log().logger.debug(sql)
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(sql)
@@ -88,7 +87,7 @@ class mysqlDB(object):
         try:
             conn.commit()
         except:
-            log.log().logger.info('commit error')
+            log.log().logger.error('commit error')
         conn.close()
 
     # 测试查询，防止sql注入
