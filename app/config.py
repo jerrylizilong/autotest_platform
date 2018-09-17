@@ -2,7 +2,7 @@ DBtype =  '2'   # '1' : sqlite,  2: mysql
 host='localhost'
 port='3306'
 user='root'
-password='password'
+password='jerryli'
 database='test_auto_new'
 
 isUseATX=True
@@ -22,6 +22,9 @@ else:
     logPath = currentPath + '/log/'
     screen_shot_path = currentPath +'/static/screenshot/'
 
-
-
+server_host = 'smtp.163.com'
+server_port = '25'
+from_email = 'youaccount@163.com'
+server_user = from_email
+server_password = 'yourpassword'
 
