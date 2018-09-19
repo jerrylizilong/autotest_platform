@@ -1,50 +1,10 @@
-# update : 2018-09-19
-# 新增执行完成后发送邮件
-
-# update : 2018-09-14
-## 优化步骤出错处理：  使用了 retrying 模块。  需要新安装该模块：  pip install retrying
-## 部分步骤进行了调整，建议重新初始化  keywords 表的数据。
-## 调整了打印内容
-
-
-# update ： 2018-08-28
-# 新增测试用例步骤生成器
-
-## 修改页面：新增、编辑用例
-
-# update ： 2018-08-24
-# 新增android 设备使用 ATX 进行测试：
-
-## 修改：
-### 1. app/config.py 文件新增 ATXHost 配置，需要将 atx server 的地址配置到该项中
-
-## 前提： 已安装 atx server进行设备管理
-### 关于 ATX server：
-请查看这篇文章的介绍：
-https://testerhome.com/topics/11738
-
-
-## android 用例组织：
-样例： 
-Android|com.your.packagename,点击|id@@com.your.packagename:id/btn_login,等待|2,点击|name@@GuestLogin,等待|5,截图,
-
-## 已封装步骤：
-相关的步骤已封装在  app/core/atx_step.py 中，具体包括：
-
-Android ： 打开指定已安装的app （通过包名）
-填写： type_text
-点击： click （by id/name/description/class）
-截图： take_screenshot
-
-由于我测试的 app 功能较为简单，目前只封装了这几个方法，如果需要可增加封装对应的方法。
-
-——————————————————————————————————————————————————————————————————————————————————————
 
 # autotest_platform
 基于python+selenium的自动化测试管理、执行平台。
 
 ## 版本要求：
 python 3.4 以上
+selenium ： 建议使用 3.0 以上版本
 
 ## 1. 管理平台：
 基于flask进行开发，进行用例、用例集、步骤等的增删改查等功能。
@@ -164,6 +124,21 @@ Chrome,前往|http://www.baidu.com,填写|id@@kw@@selenium,点击|id@@su,验证|
 - - 可对selenium提供的方法进行二次封装，请参考 点击、填写、选择等方法。对应扩展代码可在  app/core/extend.py 文件中进行管理。
 
 
+——————————————————————————————————————————————————————————————————————————————————————
+# atx 部分说明
+## android 用例组织：
+样例：
+Android|com.your.packagename,点击|id@@com.your.packagename:id/btn_login,等待|2,点击|name@@GuestLogin,等待|5,截图,
+
+## 已封装步骤：
+相关的步骤已封装在  app/core/atx_step.py 中，具体包括：
+
+Android ： 打开指定已安装的app （通过包名）
+填写： type_text
+点击： click （by id/name/description/class）
+截图： take_screenshot
+
+由于我测试的 app 功能较为简单，目前只封装了这几个方法，如果需要可增加封装对应的方法。
 
 
 
