@@ -307,17 +307,17 @@ class test_batch_manage(object):
         sql = 'SELECT id FROM test_suite WHERE (STATUS = 0 OR STATUS = 2 ) ; '
         result = useDB.useDB().search(sql)
         check_result = ''
+        test_suite_list = []
         if len(result):
-            for id in result:
-                sql = 'SELECT COUNT(1) FROM test_batch WHERE test_suite_id = %s AND STATUS in (0,4);' %id
+            for test_suite_id in result:
+                sql = 'SELECT COUNT(1) FROM test_batch WHERE test_suite_id = %s AND STATUS in (0,4);' %test_suite_id
                 result1 = useDB.useDB().search(sql)
-                # print(result1[0][0])
                 if len(result1) and (result1[0][0]==0):
                     if check_result !='':
                         check_result += ','
-                    check_result +=(str(id[0]))
-                    # print(check_result)
-        return check_result
+                    check_result +=(str(test_suite_id[0]))
+                    test_suite_list.append(test_suite_id[0])
+        return check_result,test_suite_list
 
 
     def set_test_running(self,id,deviceList=[]):

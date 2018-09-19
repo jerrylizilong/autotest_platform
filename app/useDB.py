@@ -52,7 +52,7 @@ class mysqlDB(object):
     def connect(self):
         # change root password to yours:
         import mysql.connector
-        conn = mysql.connector.connect(host=config.host,port=config.port, user=config.user, password=config.password, database=config.database)
+        conn = mysql.connector.connect(host=config.db_host, port=config.db_port, user=config.db_user, password=config.db_password, database=config.database)
         return conn
 
     def search(self, sql):

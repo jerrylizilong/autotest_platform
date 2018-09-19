@@ -112,7 +112,7 @@ class hubs():
         return results
 
     def getDevices(self):
-        url = config.ATXHost+'/list'
+        url = config.ATXHost + '/list'
         response, content = util.util().send(url)
         content = json.loads(content)
         deviceList = []
@@ -125,7 +125,7 @@ class hubs():
 
     #获取设备列表信息
     def getDevicesList(self):
-        url = config.ATXHost+'/list'
+        url = config.ATXHost + '/list'
         response, content = util.util().send(url)
         content = json.loads(content)
         deviceLists=[]

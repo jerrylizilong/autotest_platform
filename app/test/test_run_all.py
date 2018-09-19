@@ -49,3 +49,4 @@ def run_all():
     #插入数据库
     test_unittest_manage.test_unittest_manage().new_unittest_case(reportName, start_time, end_time, reportFileName)
 
+run_all()

@@ -2,7 +2,7 @@ DBtype =  '2'   # '1' : sqlite,  2: mysql
 host='localhost'
 port='3306'
 user='root'
-password='jerryli'
+password='yourpassword'
 database='test_auto_new'
 
 isUseATX=True
@@ -22,9 +22,12 @@ else:
     logPath = currentPath + '/log/'
     screen_shot_path = currentPath +'/static/screenshot/'
 
-server_host = 'smtp.163.com'
-server_port = '25'
-from_email = 'youaccount@163.com'
-server_user = from_email
-server_password = 'yourpassword'
+is_email_enable = False
+flask_host = 'http://localhost:5000'  # 邮件中的报告链接会使用
+smtp_server_host = 'smtp.163.com'
+smtp_server_port = '25'
+smtp_from_email = 'youraccount@163.com'
+smtp_default_to_email = 'youraccount@163.com'
+smtp_server_user = smtp_from_email
+smtp_server_password = 'yourpassword'
 

@@ -1,3 +1,6 @@
+# update : 2018-09-19
+# 新增执行完成后发送邮件
+
 # update : 2018-09-14
 ## 优化步骤出错处理：  使用了 retrying 模块。  需要新安装该模块：  pip install retrying
 ## 部分步骤进行了调整，建议重新初始化  keywords 表的数据。
@@ -68,8 +71,8 @@ git clone https://github.com/jerrylizilong/autotest_platform.git
 cd autotest_platform
 pip3 install -r requirements.txt
 ```
-- 3. 数据库配置： 创建数据库，并执行 init.sql 建表并初始化配置数据。
-- 4. 配置： 修改 app/config.py 中关于数据库部分的配置： host、port、database、user、password。
+- 3. 数据库配置： 创建数据库，并执行 init.sql 建表并初始化配置数据。 修改 app/config.py 中关于数据库部分的配置： host、port、database、user、password。
+- 4. 邮件配置：修改 app/config.py 中关于邮件部分的配置。
 
 ## 启动：
 ### 1.启动 flask：

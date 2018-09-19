@@ -5,12 +5,9 @@ from app.db import test_task_manage
 
 
 def main():
-    # test_task_manage.test_task_manage().update_test_suite_check()
+
     idList = test_task_manage.test_task_manage().test_suite_list()
     idList1 = test_task_manage.test_task_manage().test_case_list()
-    # log.log().logger.info(idList)
-    result1=0
-    result2=0
     if len(idList):
         for caselist in idList:
             test_suite_id = caselist[0]
@@ -27,22 +24,15 @@ def main():
             else:
                 threadNum = 0
                 runType = ''
-            # if runType == '':
-            #     test_task_manage.test_task_manage().update_test_suite(test_suite_id, '3')
-            # else:
-                # test_task_manage.test_task_manage().update_test_suite(test_suite_id, '2')
             process.process().runmain(test_suite_id, threadNum, runType)
-                # test_task_manage.test_task_manage().update_test_suite_check()
         result1 = 0
     else:
-        # log.log().logger.info('no test is available!')
         result1=1
     if len(idList1):
         threadNum = 1
         process.process().multipleRun(idList1, threadNum)
         result2 = 0
     else:
-        # log.log().logger.info('no test is available!')
         result2=1
     result = result1 +result2
     return result
