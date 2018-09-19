@@ -1,4 +1,13 @@
 
+参考链接：
+
+https://testerhome.com/topics/15534
+
+https://testerhome.com/topics/15897
+
+https://testerhome.com/topics/16106
+
+
 # autotest_platform
 基于python+selenium的自动化测试管理、执行平台。
 
@@ -62,6 +71,24 @@ python client.py
 #### 3.2 其他方式（原有selenium server、selenium docker等）
 - 将已启动的selenium服务地址（如 http://172.10.XXX.XXX:4444）手动添加到自动化测试-节点管理中即可。
 
+#### 附： docker 搭建selenium 镜像命令：
+拉取相关镜像：
+```
+docker pull selenium/hub
+docker pull selenium/node-chrome
+docker pull selenium/node-firefox
+```
+启动 hub :
+```
+docker network create grid
+docker run -d -p 4444:4444 --net grid --name selenium-hub selenium/hu
+```
+启动节点：
+```
+# 建议 NODE_MAX_INSTANCES、NODE_MAX_SESSION 两个参数都设置为 10，便于并发执行
+docker run -e NODE_MAX_INSTANCES=10 -e NODE_MAX_SESSION=10 -d --net grid -e HUB_HOST=selenium-hub selenium/node-firefox
+docker run -e NODE_MAX_INSTANCES=10 -e NODE_MAX_SESSION=10 -d --net grid -e HUB_HOST=selenium-hub selenium/node-chrome
+```
 
 ## 使用说明：
 
@@ -72,6 +99,14 @@ python client.py
 - 单个步骤的格式： 步骤名称+分隔符（|）+参数列表（参数间按@@进行分隔）。如：填写|id@@kw@@selenium， 表示步骤为“填写”，参数列表为“id、kw、selenium”。
 - 默认的参数含义：1：通过什么属性定位目标元素（可使用id、name、class、text、xpath、css等多种定位方式进行定位） 2：目标元素对应的属性值（如id = kw） 3：其他。
 - 例如：填写|id@@kw@@selenium： 代表通过 id = kw 查找到输入框，并输入  selenium 。
+
+#### 1.1 用例初始化：
+初始化可以有以下方式：
+
+- 指定浏览器类型，如 Chrome、 Firefox。 需要对应的selenium server支持。
+- 指定模拟手机型号， 如 Chrome|iPhone 6。目前只有 chrome 浏览器支持模拟手机。
+- 调用其他已封装的公共方法，如 公共方法|登录。 具体的公共方法格式与正常用例一致，但需要指定用例类型为 公共用例。
+- 公共方法支持嵌套，即一个公共方法里调用另一个公共方法。
 
 #### 具体步骤说明请查看菜单：自动化测试-步骤说明。
 
