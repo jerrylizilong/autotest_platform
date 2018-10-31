@@ -1,9 +1,9 @@
 # 数据库配置
 DBtype =  '2'   # '1' : sqlite,  2: mysql
-host='localhost'
-port='3306'
-user='root'
-password='yourpassword'
+db_host='localhost'
+db_port='3306'
+db_user='root'
+db_password='yourpassword'
 database='test_auto_new'
 
 # atx 配置
