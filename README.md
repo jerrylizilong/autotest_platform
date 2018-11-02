@@ -53,14 +53,19 @@ python run.py
 初始用户及密码：  admin/0
 ### 2. 启动 core service（selenium 的执行服务）：
 ```python
-python app/core/coreservice.py
+python core.py
 ```
 
 
 ### 3. selenium 接入
 可以按以下两种方式进行接入：
 #### 3.1 selenium server接入：
-- 服务端启动： python app/core/service.py， 将通过9998 端口监听节点启动、关闭状态
+- 服务端启动：
+ ```
+ python run_service.py
+ ```
+ 将通过9998 端口监听节点启动、关闭状态
+
 - selenium grid 节点启动： 将app/client 目录复制到已安装selenium driver 的服务器/PC 中，修改client.py文件中host 为服务端对应地址，并启动： 
 ```python
 python client.py
@@ -176,4 +181,16 @@ Android ： 打开指定已安装的app （通过包名）
 由于我测试的 app 功能较为简单，目前只封装了这几个方法，如果需要可增加封装对应的方法。
 
 
+# 常见问题：
+### 1：没有可用的节点
+- Q： 运行用例之后会提示这个-ERROR: no hubs is availabe!
+- A： 说明没有可以使用的selenium节点执行测试。请检查是否已启动对应的 selenium server，并已配置到节点管理中，而且服务器可以正常访问该节点。
+### 2：selenium 的浏览器被占用
+- Q：使用docker启动的selenium 镜像服务，如果用例执行报错， selenium grid console中的Chrome浏览器好像被置灰不可用了
+- A：这是因为如果执行报错时，没有正常退出 driver，导致对应的selenium线程持续被占用，需要等待一段时间才能释放。建议启动docker 的时候把最大进程设置为10， 这样可以并发执行，提高使用率：
+sudo docker run -e NODE_MAX_INSTANCES=10 -e NODE_MAX_SESSION=10 -d --net grid -e HUB_HOST=selenium-hub -v /dev/shm:/dev/shm selenium/node-firefox-debug
+
+### 3：selenium 相关报错
+- Q：selenium相关报错
+- A：可能对应的 selenium server版本不支持目前使用的一些功能，建议更新到较新版本的 selenium server
 
