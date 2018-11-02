@@ -14,9 +14,16 @@ https://testerhome.com/topics/16106
 ## 版本要求：
 python 3.4 以上
 selenium ： 建议使用 3.0 以上版本
+mysql : 建议 5.5 以上
 
 ## 1. 管理平台：
 基于flask进行开发，进行用例、用例集、步骤等的增删改查等功能。
+
+启动 flask：
+```
+python run.py
+```
+
 
 ## 2. 启动core服务：
 ```
@@ -29,19 +36,47 @@ python core.py
 
 
 ## 安装步骤：
-- 1. clone 或下载代码包到本地解压:   
+### 1. clone 或下载代码包到本地解压:
 ```
 git clone https://github.com/jerrylizilong/autotest_platform.git
 ```
 
 
-- 2. 按requirements.txt 安装依赖:
+### 2. 按requirements.txt 安装依赖:
 ```
 cd autotest_platform
 pip3 install -r requirements.txt
 ```
-- 3. 数据库配置： 创建数据库，并执行 init.sql 建表并初始化配置数据。 修改 app/config.py 中关于数据库部分的配置： host、port、database、user、password。
-- 4. 邮件配置：修改 app/config.py 中关于邮件部分的配置。
+###  3. 数据库配置：
+#### 3.1 创建数据库，并执行 init.sql 建表并初始化配置数据。
+#### 3.2修改 app/config.py 中关于数据库部分的配置： host、port、database、user、password。
+```
+ db_host='localhost'
+ db_port='3306'
+ db_user='root'
+ db_password='yourpassword'
+ database='test_auto_new'
+```
+###  4. 邮件配置：修改 app/config.py 中关于邮件部分的配置（如不需要发送邮件，请忽略）。
+
+```
+# smtp 发送邮件相关配置：
+is_email_enable = False   #发送邮件开关
+flask_host = 'http://localhost:5000'  # 邮件中的报告链接会使用
+smtp_server_host = 'smtp.163.com'  # 如使用其他的smtp 服务，请修改对应host 和端口
+smtp_server_port = '25'
+smtp_from_email = 'youraccount@163.com'   # 发送邮件的邮箱账号
+smtp_default_to_email = 'youraccount@163.com'   # 默认接收邮件的邮箱账号
+smtp_server_user = smtp_from_email
+smtp_server_password = 'yourpassword'     # 发送邮件的邮箱密码
+```
+
+### 5 修改 app/config.py 中关于 atx server 配置（如不需要使用 atx 测试android 设备 ，请忽略）：
+```
+# atx 配置
+isUseATX=True
+ATXHost = 'http://localhost:8000'
+```
 
 ## 启动：
 ### 1.启动 flask：
@@ -58,6 +93,9 @@ python core.py
 
 
 ### 3. selenium 接入
+
+selenium 最终接入的效果是提供可执行的selenium 环境供系统执行用例。
+
 可以按以下两种方式进行接入：
 #### 3.1 selenium server接入：
 - 服务端启动：
@@ -74,7 +112,8 @@ python client.py
 服务启动后，会启动 selenium server，并注册到服务器中。
 
 #### 3.2 其他方式（原有selenium server、selenium docker等）
-- 将已启动的selenium服务地址（如 http://172.10.XXX.XXX:4444）手动添加到自动化测试-节点管理中即可。
+- 将已启动的selenium服务地址（如 http://172.10.XXX.XXX:4444）手动添加到自动化测试-节点管理中。
+- 或直接将 server host 和 ip 添加到  test_hubs 表中。
 
 #### 附： docker 搭建selenium 镜像命令：
 拉取相关镜像：
@@ -113,22 +152,22 @@ docker run -e NODE_MAX_INSTANCES=10 -e NODE_MAX_SESSION=10 -d --net grid -e HUB_
 - 调用其他已封装的公共方法，如 公共方法|登录。 具体的公共方法格式与正常用例一致，但需要指定用例类型为 公共用例。
 - 公共方法支持嵌套，即一个公共方法里调用另一个公共方法。
 
-#### 具体步骤说明请查看菜单：自动化测试-步骤说明。
+##### 具体步骤说明请查看菜单：自动化测试-步骤说明。
 
 #### 用例说明：
 例子：在百度中输入selenium，并验证查询结果是否正确。
-
+```
 Chrome,前往|http://www.baidu.com,填写|id@@kw@@selenium,点击|id@@su,验证|Web Browser Automation,截图
-
+```
 步骤解析：
-
+```
 - Chrome： 调用 Chrome driver 进行测试。    
 - 前往|http://www.baidu.com ：  前往目标页。
 - 填写|id@@kw@@selenium ：  在 id 为 kw 的元素中输入 selenium。    
 - 点击|id@@su ： 点击 id 为 su 的元素。
 - 验证|Web Browser Automation ：  验证页面中是否出现 ‘Web Browser Automation’ 的文字。
 - 截图： 对当前页面进行截图并保存。
-
+```
 
 ### 2.公共用例
 
@@ -160,8 +199,8 @@ Chrome,前往|http://www.baidu.com,填写|id@@kw@@selenium,点击|id@@su,验证|
 ### 6.步骤管理：
 - 步骤：现已对大部分常见步骤进行了封装。
 - 扩展封装：可根据需要进行扩展封装。
-- - 可直接封装selenium的方法，请参考 刷新、前往、悬浮点击 等方法。
-- - 可对selenium提供的方法进行二次封装，请参考 点击、填写、选择等方法。对应扩展代码可在  app/core/extend.py 文件中进行管理。
+- 可直接封装selenium的方法，请参考 刷新、前往、悬浮点击 等方法。
+- 可对selenium提供的方法进行二次封装，请参考 点击、填写、选择等方法。对应扩展代码可在  app/core/extend.py 文件中进行管理。
 
 
 ——————————————————————————————————————————————————————————————————————————————————————
