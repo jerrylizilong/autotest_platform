@@ -1,80 +1,47 @@
-from app.core import log, buildCase, atx_steps
+from app.core import log, atx_steps
 from app.db import test_batch_manage
+from retrying import retry
+
 class atx_core():
 
     # run a signle case.
     # the main method
-    def run_case(self,steps,caseNo,deviceList = []):
-        search_result = test_batch_manage.test_batch_manage().search_test_batch_detail1(caseNo, ['ip'])
+    def run_case(self,id,package,newstep,case,screenFileList,deviceList = []):
+        result = '2'
+        stepN = 'init'
+        search_result = test_batch_manage.test_batch_manage().search_test_batch_detail1(id, ['ip'])
         if len(search_result):
             log.log().logger.info(search_result)
             log.log().logger.info(deviceList)
             if search_result['ip']:
                 deviceList = [search_result['ip']]
                 log.log().logger.info(deviceList)
-        step_name = ''
-        steps = steps.split(',')
-        steps = buildCase.buildCase().readPublic(steps)
-        step0 = steps[0].split('|')
-        if len(step0)!=2:
-            log.log().logger.error('android init is not defined!')
-            return 2, 'init', []
-        elif step0[0]!='Android':
-            log.log().logger.error('android init is not defined!')
-            return 2, 'init', []
+
+        isConnected,device0,u = atx_steps.atx_driver().connectDevice(package,deviceList)
+        log.log().logger.info(' is %s connected?  %s' %(device0, isConnected))
+        if isConnected:
+            for i in range(len(newstep)):
+                stepN = case[i].replace('"', "'")
+                u, result, screenFileList = self.do_step(u,newstep[i], stepN,id,screenFileList)
+                if result=='2':
+                    break
+            return result,stepN,screenFileList
         else:
-            package = step0[1]
-            isConnected,device0,u = atx_steps.atx_driver().connectDevice(package,deviceList)
-            log.log().logger.info(' is %s connected?  %s' %(device0, isConnected))
-            if isConnected:
-                log.log().logger.info('start runnning test on %s' %device0)
-                screenFileList = []
-                result = 1
-                for step in steps:
-                    log.log().logger.info('current step is: %s' %step)
-                    if len(step)==0:
-                        pass
-                    else:
-                        step = step.split('|')
-                        # log().logger.info(step)
-                        if len(step) >= 1:
-                            step_name = step[0]
-                            log.log().logger.info(step_name)
-                            if len(step) > 1:
-                                detail = step[1].split('@@')
-                                log.log().logger.info(detail)
-                            else:
-                                detail = []
-                            trytime = 3
-                            while trytime:
-                                log.log().logger.info('try time: %s' % (4 - trytime))
-                                u,result,screenFileList = atx_steps.atx_driver().run_step(u, step_name, detail,caseNo,screenFileList)
-                                if result == 2:
-                                    log.log().logger.error('failed at %s : %s, try again!' % (step_name, detail))
-                                    trytime += -1
-                                else:
-                                    trytime=0
-                                    log.log().logger.info('finish step %s : %s.' % (step_name, detail))
-                            if trytime==0 and result == 2:
-                                log.log().logger.error('failed at %s : %s after trying 3 times!' % (step_name, detail))
-                                break
-
-                        else:
-                            pass
-                return result,step_name,screenFileList
-            else:
-                log.log().logger.info('package is not found in any device!')
-                return 2, 'package not found', []
+            log.log().logger.info('package is not found in any device!')
+            return '2', 'package not found', []
 
 
+    @retry(stop_max_attempt_number=3,wait_fixed=5000)
+    def do_step(self,u, steps,case,id,screenFileList):
+        keyword = steps[0]
+        log.log().logger.info("id ： %-10d |  关键字： %-20s |  步骤：%-60s | 命令： %s" % (id, keyword, case, steps[1]))
+        if keyword == '截图':
+            result,screenFileList = atx_steps.atx_driver().take_screenshot(u,'normal', id, screenFileList)
+        else:
+            u, result, screenFileList=atx_steps.atx_driver().run_step(u, keyword, steps[1], id, screenFileList)
+        try:
+            assert result == '1'
+        except AssertionError as e:
+            print(e)
+        return u,result, screenFileList
 
-# deviceList = ['172.16.131.102']
-# steps = 'Android|com.ghw.sdk2,点击|id@@com.ghw.sdk2:id/btn_login,等待|5,点击|name@@FACEBOOK登录,等待|10'
-# for i in range(200):
-#     steps += ',点击|name@@FACEBOOK登录,等待|10'
-#
-# while 1:
-#     try:
-#         atx_core().run_case(steps,1000,deviceList)
-#     except FileNotFoundError as e:
-#         print(e)

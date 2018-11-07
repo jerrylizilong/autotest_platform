@@ -26,67 +26,21 @@ class process():
         package = ''
         log.log().logger.info('开始执行 id ： %-10d | 用例 ：%s ' %(id,case))
         newstep,case = buildCase.buildCase().getCase(case)
+        # print(newstep,case)
         if len(newstep):
             runType = newstep[0][0]
             if len(newstep[0][1]) == 1 :
                 if newstep[0][1][0]!='1':
                     package = newstep[0][1][0]
+            newstep.remove(newstep[0])
+            case.remove(case[0])
             if runType == 'Android' and isUseATX:
                 # 使用 atx 执行 Android 用例
-                result, stepN,screenFileList = atx_core.atx_core().run_case(case,id,deviceList=deviceList)
+                result, stepN,screenFileList = atx_core.atx_core().run_case(id,package,newstep,case,screenFileList,deviceList=deviceList)
                 log.log().logger.info('%s, %s, %s' %(result, stepN,screenFileList))
             else:
                 # 使用 selenium 执行 web 用例
-                if browserType !=''and package =='':
-                    runType = browserType
-                driver = coredriver.coredriver().iniDriver(runType,devicename=package)
-                result = '2'
-                stepN = 'init'
-                if driver == 0: # 没有可执行的节点，无法执行
-                    log.log().logger.info('cannot run without available hubs!')
-                    result = '3'
-                    stepN = 'init'
-                else:
-                    if len(newstep)<2:   # 用例中没有执行步骤，无法执行
-                        result = '3'
-                        stepN = 'no steps!'
-                    else:
-                        for i in range(1,len(newstep)):   # 开始逐个步骤执行
-                            stepN = case[i].replace('"',"'")
-                            # result, stepN, screenFileList = self.do_step(driver, newstep[i], screenFileList)
-                            try:
-                                result,stepN, screenFileList=self.do_step(driver,newstep[i],stepN,id,screenFileList)
-                            except:
-                                result = '2'
-                                log.log().logger.error('id ： %-10d | 失败步骤：%s ' %(id,stepN))
-                                # ("id ： %-10d |  关键字： %-20s |  步骤：%-60s | 命令： %s" % (id, keyword, case, comed))
-                            if result == '2':
-                                trytime = 2
-                                while trytime:
-                                    try:
-                                        result1, screenFileList = extend.extend().screenshot(driver, id, screenFileList,
-                                                                                             True)
-                                        break
-                                    except UnexpectedAlertPresentException as e:
-                                        log.log().logger.info(e)
-                                        time.sleep(5)
-                                        try:
-                                            driver.switch_to.alert.accept()
-                                        except:
-                                            log.log().logger.error('no alert')
-                                    trytime += -1
-
-                                break
-                # for android driver ,the ending should by driver.quite();  for webdriver ,the ending is driver.close()
-
-                    try:
-                        driver.quit()
-                    except WebDriverException as e:
-                        log.log().logger.error(e)
-                        try:
-                            driver.close()
-                        except WebDriverException as e:
-                            log.log().logger.error(e)
+                result,stepN,screenFileList = self.run_selenium(id,runType,package,newstep,case,screenFileList)
         else:
             result = '3'
             stepN = '公共方法不存在!'
@@ -97,7 +51,58 @@ class process():
         return result
 
 
-    @retry(stop_max_attempt_number=3,wait_fixed=2000)
+    def run_selenium(self,id,runType,package,newstep,case,screenFileList):
+        # print(id,runType,package,newstep,case,screenFileList)
+        result = '2'
+        stepN = 'init'
+        if runType != '' and package == '':
+            driver = coredriver.coredriver().iniDriver(runType, devicename=package)
+            if driver == 0:  # 没有可执行的节点，无法执行
+                log.log().logger.info('cannot run without available hubs!')
+                result = '3'
+            else:
+                if len(newstep) < 2:  # 用例中没有执行步骤，无法执行
+                    result = '3'
+                    stepN = 'no steps!'
+                else:
+                    for i in range(len(newstep)):  # 开始逐个步骤执行
+                        stepN = case[i].replace('"', "'")
+                        try:
+                            result, stepN, screenFileList = self.do_step(driver, newstep[i], stepN, id, screenFileList)
+                        except:
+                            log.log().logger.error('id ： %-10d | 失败步骤：%s ' % (id, stepN))
+                            result ='2'
+                        if result == '2':
+                            trytime = 2
+                            while trytime:
+                                try:
+                                    result, screenFileList = extend.extend().screenshot(driver, id, screenFileList,
+                                                                                         True)
+                                    break
+                                except UnexpectedAlertPresentException as e:
+                                    log.log().logger.info(e)
+                                    time.sleep(5)
+                                    try:
+                                        driver.switch_to.alert.accept()
+                                    except:
+                                        log.log().logger.error('no alert')
+                                trytime += -1
+                            break
+                # for android driver ,the ending should by driver.quite();  for webdriver ,the ending is driver.close()
+
+                try:
+                    driver.quit()
+                except WebDriverException as e:
+                    log.log().logger.error(e)
+                    try:
+                        driver.close()
+                    except WebDriverException as e:
+                        log.log().logger.error(e)
+        return result,stepN,screenFileList
+
+
+
+    @retry(stop_max_attempt_number=3,wait_fixed=5000)
     def do_step(self,driver,steps,case,id,screenFileList):
         keyword = steps[0]
         stepN = keyword

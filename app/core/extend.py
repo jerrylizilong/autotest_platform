@@ -57,7 +57,8 @@ class extend():
         log.log().logger.debug(fileName)
         driver.save_screenshot(fileName)
         screenFileList.append(fileName1)
-        result = '1'
+        if not isError:
+            result = '1'
         return result, screenFileList
 
     def assert_text(self,driver,text):

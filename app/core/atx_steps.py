@@ -80,10 +80,10 @@ class atx_driver():
             time.sleep(2)
             u1, result1 =self.click(u,'name','允许')
             time.sleep(1)
-            if result1==2:
+            if result1=='2':
                 u1, result1 = self.click(u, 'name', '始终允许')
                 time.sleep(1)
-            if result1==2:
+            if result1=='2':
                 u1, result1 = self.click(u, 'name', 'ALLOW')
                 time.sleep(1)
             return u
@@ -96,7 +96,8 @@ class atx_driver():
         image = u.screenshot()
         image.save(fileName)
         screenFileList.append(fileName1)
-        return screenFileList
+        result = '1'
+        return result,screenFileList
 
     # type text into the target element.
     # method :  id, name     the method used to locate the target element.
@@ -106,39 +107,39 @@ class atx_driver():
             if u(resourceId=resource_id).exists:
                 u(resourceId=resource_id).send_keys(text)
                 time.sleep(1)
-                result = 1
+                result = '1'
                 u.adb_shell('input', 'keyevent', 'BACK')
                 time.sleep(1)
             else:
                 log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" %(method,resource_id))
-                result = 2
+                result = '2'
         elif method== 'name':
             if u(text=resource_id).exists:
                 u(text=resource_id).send_keys(text)
                 time.sleep(1)
-                result = 1
+                result = '1'
                 u.adb_shell('input', 'keyevent', 'BACK')
                 time.sleep(1)
             else:
                 log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % (method, resource_id))
-                result = 2
+                result = '2'
         elif method== 'class':
             if u(className=resource_id).exists:
                 u(className=resource_id).send_keys(text)
                 time.sleep(1)
-                result = 1
+                result = '1'
                 u.adb_shell('input', 'keyevent', 'BACK')
                 time.sleep(1)
             else:
                 log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % (method, resource_id))
-                result = 2
+                result = '2'
         else:
             log.log().logger.error(u"元素方法未定义！ %s" %method)
-            result = 2
+            result = '2'
         return u,result
 
     def click(self,u,by,text):
-        result = 2
+        result = '2'
         if by == 'name':
             u, result = self.click_text(u, text)
         elif by == 'id':
@@ -154,10 +155,10 @@ class atx_driver():
         if u(text=text).exists:
             u(text=text).click()
             time.sleep(1)
-            result = 1
+            result = '1'
         else:
             log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % ('text', text))
-            result = 2
+            result = '2'
         return u,result
 
     # click an element locating by it's resourceId.
@@ -165,10 +166,10 @@ class atx_driver():
         if u(resourceId=id).exists:
             u(resourceId=id).click()
             time.sleep(1)
-            result = 1
+            result = '1'
         else:
             log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % ('id', id))
-            result = 2
+            result = '2'
         return u, result
 
     # click an element locating by it's description.
@@ -176,10 +177,10 @@ class atx_driver():
         if u(description=id).exists:
             u(description=id).click()
             time.sleep(1)
-            result = 1
+            result = '1'
         else:
             log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % ('description', id))
-            result = 2
+            result = '2'
         return u, result
 
     # click an element locating by it's className.
@@ -187,17 +188,17 @@ class atx_driver():
         if u(className=id).exists:
             u(className=id).click()
             time.sleep(1)
-            result = 1
+            result = '1'
         else:
             log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % ('className', id))
-            result = 2
+            result = '2'
         return u, result
 
     # Send event to data collection.     used to test sending data in SDK demo.
     def sendData(self, u,name):
         u, result=self.click_text(u,name)
         time.sleep(2)
-        if result==1:
+        if result=='1':
             if u(text='发送').exists:
                 u, result =self.click_text(u,'发送')
             else:
@@ -209,7 +210,8 @@ class atx_driver():
     # run step.
     # if a new step type is defined, it should be added to the step_name list.
     def run_step(self,u, step_name, detail,caseNo,screenFileList):
-        result = 1
+        # print(u, step_name, detail,caseNo,screenFileList)
+        result = '1'
         if step_name == 'Android':
             time.sleep(1)
         elif step_name == '点击':
@@ -228,10 +230,10 @@ class atx_driver():
         elif step_name == '截图':
             screenFileList=self.take_screenshot(u, 'normal',caseNo,screenFileList)
         else:
-            result=2
+            result='2'
             log.log().logger.error('method is not defined : %s' %step_name)
-        if result == 0:
+        if result == '0':
             log.log().logger.error('package is not fould!')
-        elif result == 2:
+        elif result == '2':
             screenFileList =self.take_screenshot(u, 'fail', caseNo, screenFileList)
         return u,result,screenFileList
