@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template, jsonify, request,session
+from flask import Blueprint,render_template, jsonify, request,redirect,url_for
 from app import log, config
 from app.core import hubs
 from app.view import viewutil,user
@@ -75,12 +75,18 @@ def run_unittest():
         result = jsonify({'code': 500, 'msg': 'should be get!'})
         return result
     else:
-        from app.test import test_run_all
+        from app.test import run_unittest
         log.log().logger.info('start run unittest')
-        test_run_all.run_all()
+        run_unittest.run_all()
         result = jsonify({'code': 200, 'msg': 'success!'})
 
         return result
+
+
+@mod.route('/assets/style.css', methods=['GET'])
+def get_media():
+    return redirect(url_for('static',filename='assets/style.css'))
+
 
 
 # 节点管理
