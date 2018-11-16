@@ -1,13 +1,16 @@
 from app import useDB
 from app.db import test_batch_manage
 class test_task_manage():
-    def test_suite_list(self):
-        sql = 'select id,run_type from test_suite where status in (0,2);'
+    def test_suite_list(self,runtype='2'):
+        sql = 'select id,run_type from test_suite where status in (0,2) and run_type = "%s";' %runtype
         idList = useDB.useDB().search(sql)
         return idList
 
-    def test_case_list(self):
-        sql = 'select id, steps,browser_type from test_batch where status in (0) and test_suite_id = 0;'
+    def test_case_list(self,isATX=False):
+        if isATX:
+            sql = 'select t1.id, t1.steps,t1.browser_type from test_batch t1, test_case t2 where t1.status in (0) and t1.test_suite_id = 0 and t1.test_case_id=t2.id and t2.module="android";'
+        else:
+            sql = 'select t1.id, t1.steps,t1.browser_type from test_batch t1, test_case t2 where t1.status in (0) and t1.test_suite_id = 0 and t1.test_case_id=t2.id and t2.module !="android";'
         idList = useDB.useDB().search(sql)
         return idList
 
