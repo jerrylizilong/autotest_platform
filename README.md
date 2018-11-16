@@ -35,6 +35,24 @@ python core.py
 - 需结合selenium grid 或 selenium docker 作为节点进行具体执行载体。
 
 
+## 3. 启动atx core服务：
+```
+python atx_core.py
+```
+
+
+- 基于atx 进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。
+- 需安装atxserver（https://github.com/openatx/atx-server），并修改 app/config.py 文件的以下内容：
+
+```
+# atx 配置
+isUseATX=True   # True 代表使用 atx
+ATXHost = 'http://172.16.100.168:8002'       # 对应的 atxserver 地址
+```
+
+
+
+
 ## 安装步骤：
 ### 1. clone 或下载代码包到本地解压:
 ```
@@ -86,9 +104,14 @@ python run.py
        
 此时可通过访问  localhost:5000  访问登录界面。
 初始用户及密码：  admin/0
-### 2. 启动 core service（selenium 的执行服务）：
+### 2.1 启动 core service（selenium 的执行服务）：
 ```python
 python core.py
+```
+
+## 2.2. 启动atx core服务：
+```
+python atx_core.py
 ```
 
 
