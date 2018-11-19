@@ -42,7 +42,7 @@ python atx_core.py
 
 
 - 基于atx 进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。
-- 需安装atxserver（https://github.com/openatx/atx-server），并修改 app/config.py 文件的以下内容：
+- 需安装atxserver（https://github.com/openatx/atx-server ），并修改 app/config.py 文件的以下内容：
 
 ```
 # atx 配置
