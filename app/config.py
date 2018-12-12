@@ -11,19 +11,12 @@ isUseATX=True
 ATXHost = 'http://localhost:8000'
 
 # 截图目录相关配置
-import os,platform
+import os
 currentPath = os.path.dirname(os.path.abspath(__file__))
-print(currentPath)
-if platform.system()=='Windows':
-    logPath = currentPath + '\\log\\'
-    reportPathWin = currentPath + '\\templates\\reports\\'
-    unittestPathWin = currentPath + '\\test\\'
-    screen_shot_path = currentPath + '\\static\\screenshot\\'
-else:
-    reportPathLinux =currentPath + '/templates/reports/'
-    unittestPathLinux = currentPath + '/test/'
-    logPath = currentPath + '/log/'
-    screen_shot_path = currentPath +'/static/screenshot/'
+logPath = os.path.join(currentPath,'log')
+reportPath = os.path.join(currentPath,'templates','reports')
+unittestPath = os.path.join(currentPath,'test')
+screen_shot_path = os.path.join(currentPath,'static','screenshot')
 
 # smtp 发送邮件相关配置：
 is_email_enable = False   #发送邮件开关

@@ -9,11 +9,7 @@ def run_all():
     reportName = 'unittest_' + str(nowTime)
     reportFileName = reportName + '.html'
     test_folder = config.unittestPath
-
-    if platform.system() == 'Windows':
-        reportNameFull = config.reportPath+'\\'+reportFileName
-    else:
-        reportNameFull = config.reportPath + '/' + reportFileName
+    reportNameFull = os.path.join(config.reportPath , reportFileName)
 
     start_time = datetime.datetime.now()
     pytest.main([test_folder,'--html=%s' %reportNameFull,'-o log_cli=true -o log_cli_level=INFO'])
