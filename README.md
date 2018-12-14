@@ -12,7 +12,11 @@ https://testerhome.com/topics/16106 ： 使用 python 多进程模块 multiproce
 基于python+selenium的自动化测试管理、执行平台。
 执行效果：
 
-![example1](doc/1.gif "example1")
+单条用例执行记录：
+![example0](doc/0.png "example0")
+
+单条用例执行截图记录：
+![example1](doc/1.png "example1")
 
 用例集执行统计：
 ![example2](doc/2.png "example2")
