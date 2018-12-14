@@ -10,6 +10,12 @@ https://testerhome.com/topics/16106 ： 使用 python 多进程模块 multiproce
 
 # autotest_platform
 基于python+selenium的自动化测试管理、执行平台。
+执行效果：
+
+![example1](doc/1.gif "example1")
+
+用例集执行统计：
+![example2](doc/2.png "example2")
 
 ## 版本要求：
 - python 3.4 以上
@@ -17,6 +23,12 @@ https://testerhome.com/topics/16106 ： 使用 python 多进程模块 multiproce
 - mysql : 建议 5.5 以上
 
 ## 使用说明：
+
+### 用例编辑：
+可以使用页面的编辑器编写用例步骤：
+
+![example](doc/17.gif "example")
+
 
 ### 1. 新建用例：
 
@@ -147,14 +159,16 @@ Chrome,前往|http://www.baidu.com,点击|name@@tj_trnews,验证标题|百度新
 - 可直接封装selenium的方法，请参考 刷新、前往、悬浮点击 等方法。
 - 可对selenium提供的方法进行二次封装，请参考 点击、填写、选择等方法。对应扩展代码可在  app/core/extend.py 文件中进行管理。
 
+### 7.atx
 
-——————————————————————————————————————————————————————————————————————————————————————
-# atx 部分说明
-## android 用例组织：
+- 基于atx 进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。
+- 需安装atxserver（https://github.com/openatx/atx-server ）
+
+### 7.1. android 用例组织：
 样例：
 Android|com.your.packagename,点击|id@@com.your.packagename:id/btn_login,等待|2,点击|name@@GuestLogin,等待|5,截图,
 
-## 已封装步骤：
+### 7.2 已封装步骤：
 相关的步骤已封装在  app/core/atx_step.py 中，具体包括：
 
 Android ： 打开指定已安装的app （通过包名）
@@ -165,45 +179,46 @@ Android ： 打开指定已安装的app （通过包名）
 由于我测试的 app 功能较为简单，目前只封装了这几个方法，如果需要可增加封装对应的方法。
 
 
+<!--## 1. 管理平台：-->
+<!--基于flask进行开发，进行用例、用例集、步骤等的增删改查等功能。-->
+
+<!--启动 flask：-->
+<!--```-->
+<!--python run.py-->
+<!--```-->
 
 
-## 1. 管理平台：
-基于flask进行开发，进行用例、用例集、步骤等的增删改查等功能。
-
-启动 flask：
-```
-python run.py
-```
+<!--## 2. 启动core服务：-->
+<!--```-->
+<!--python core.py-->
+<!--```-->
 
 
-## 2. 启动core服务：
-```
-python core.py
-```
+<!--- 基于selenium进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。-->
+<!--- 需结合selenium grid 或 selenium docker 作为节点进行具体执行载体。-->
 
 
-- 基于selenium进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。
-- 需结合selenium grid 或 selenium docker 作为节点进行具体执行载体。
+<!--## 3. 启动atx core服务（需要安装对应的 atxserver ；  如不需使用该部分请跳过）：-->
+<!--```-->
+<!--python atx_core.py-->
+<!--```-->
 
 
-## 3. 启动atx core服务：
-```
-python atx_core.py
-```
+<!--- 基于atx 进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。-->
+<!--- 需安装atxserver（https://github.com/openatx/atx-server ），并修改 app/config.py 文件的以下内容：-->
+
+<!--```-->
+<!--# atx 配置-->
+<!--isUseATX=True   # True 代表使用 atx-->
+<!--ATXHost = 'http://172.16.100.168:8002'       # 对应的 atxserver 地址-->
+<!--```-->
 
 
-- 基于atx 进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。
-- 需安装atxserver（https://github.com/openatx/atx-server ），并修改 app/config.py 文件的以下内容：
-
-```
-# atx 配置
-isUseATX=True   # True 代表使用 atx
-ATXHost = 'http://172.16.100.168:8002'       # 对应的 atxserver 地址
-```
+——————————————————————————————————————————————————————————————————————————————————————
 
 
 
-
+# GET START:
 ## 安装步骤：
 ### 1. clone 或下载代码包到本地解压:
 ```
@@ -217,7 +232,7 @@ cd autotest_platform
 pip3 install -r requirements.txt
 ```
 ###  3. 数据库配置：
-#### 3.1 创建数据库，并执行 init.sql 建表并初始化配置数据。
+#### 3.1 在mysql中创建数据库，并执行 init.sql 建表并初始化配置数据。
 #### 3.2修改 app/config.py 中关于数据库部分的配置： host、port、database、user、password。
 ```
  db_host='localhost'
@@ -268,7 +283,9 @@ python atx_core.py
 
 ### 3. selenium 接入
 
-selenium 最终接入的效果是提供可执行的selenium 环境供系统执行用例。
+selenium 最终接入的效果是提供可执行的selenium 环境供系统执行用例。节点管理页面必须有可以使用、并状态为开启的节点才能执行用例。
+
+![example3](doc/3.png "example3")
 
 可以按以下两种方式进行接入：
 #### 3.1 selenium server接入：
@@ -286,8 +303,8 @@ python client.py
 服务启动后，会启动 selenium server，并注册到服务器中。
 
 #### 3.2 其他方式（原有selenium server、selenium docker等）
-- 将已启动的selenium服务地址（如 http://172.10.XXX.XXX:4444）手动添加到自动化测试-节点管理中。
-- 或直接将 server host 和 ip 添加到  test_hubs 表中。
+- 将已启动的selenium服务地址手动添加到自动化测试-节点管理中。
+![example7](doc/7.png "example7")
 
 #### 附： docker 搭建selenium 镜像命令：
 拉取相关镜像：
@@ -309,15 +326,37 @@ docker run -e NODE_MAX_INSTANCES=10 -e NODE_MAX_SESSION=10 -d --net grid -e HUB_
 ```
 
 
+### 4.自定义关键字：
+可以在 步骤管理  页面对已封装的关键字进行管理，或添加新的关键字：
+![example4](doc/4.png "example4")
+
+#### 4.1 封装selenium 命令
+可以直接将 python selenium 的执行语句直接封装成新的关键字方法：
+
+![example5](doc/5.png "example5")
+
+#### 4.2 封装自定义方法为关键字
+1. 在 app/core/extend.py 文件中新增新的自定义方法, 如：
+```
+    def assert_title(self,driver,text):
+        log.log().logger.info('目标文本：%s， 期待包含文本：%s' % (driver.title, text))
+        assert text in driver.title
+```
+
+2. 将封装的方法添加到步骤管理中：
+![example6](doc/6.png "example6")
+
 # 常见问题：
 ### 1：没有可用的节点
 - Q： 运行用例之后会提示这个-ERROR: no hubs is availabe!
 - A： 说明没有可以使用的selenium节点执行测试。请检查是否已启动对应的 selenium server，并已配置到节点管理中，而且服务器可以正常访问该节点。
+
 ### 2：selenium 的浏览器被占用
 - Q：使用docker启动的selenium 镜像服务，如果用例执行报错， selenium grid console中的Chrome浏览器好像被置灰不可用了
 - A：这是因为如果执行报错时，没有正常退出 driver，导致对应的selenium线程持续被占用，需要等待一段时间才能释放。建议启动docker 的时候把最大进程设置为10， 这样可以并发执行，提高使用率：
+```
 sudo docker run -e NODE_MAX_INSTANCES=10 -e NODE_MAX_SESSION=10 -d --net grid -e HUB_HOST=selenium-hub -v /dev/shm:/dev/shm selenium/node-firefox-debug
-
+```
 ### 3：selenium 相关报错
 - Q：selenium相关报错
 - A：可能对应的 selenium server版本不支持目前使用的一些功能，建议更新到较新版本的 selenium server
