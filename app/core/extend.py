@@ -199,3 +199,23 @@ class extend():
 
     def fill_file(self,driver,para_list,text, is_displayed = False):
         self.fill(driver,para_list,text, is_displayed = False)
+
+    def copy_from_another_element(self,driver,para_list1,para_list2, is_displayed = True):
+        # 将 元素 2 的值复制填写到 元素1中
+        element1 = self.find_element(driver, para_list1,is_displayed)
+        text =self.get_element_text(driver, para_list2)
+        element1.clear()
+        element1.send_keys(text)
+
+    def get_element_text(self,driver,para_list):
+        element = self.find_element(driver, para_list,is_displayed=True)
+        if len(element.text):
+            return element.text
+        elif len(element.get_attribute('value')):
+            return element.get_attribute('value')
+        elif len(element.get_attribute('textContent')):
+            return element.get_attribute('textContent')
+        elif len(element.get_attribute('innerText')):
+            return element.get_attribute('innerText')
+        else:
+            return ''
