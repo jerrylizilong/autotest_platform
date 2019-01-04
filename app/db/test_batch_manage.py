@@ -14,6 +14,7 @@ class test_batch_manage(object):
         steps.replace('"','""')
         import re
         steps = re.sub('"', '""', steps)
+        steps = str(steps).replace('\\', '\\\\')
         sql = string.Template('insert into test_batch (test_suite_id, test_case_id, name,steps,browser_type) values ("$test_suite_id","$test_case_id","$name","$steps","$browser_type");')
         sql = sql.substitute(test_suite_id = test_suite_id, test_case_id = test_case_id,steps=steps, name = name,browser_type=browser_type)
         useDB.useDB().insert(sql)
@@ -23,6 +24,7 @@ class test_batch_manage(object):
         steps.replace('"', '""')
         import re
         steps = re.sub('"', '""', steps)
+        steps = str(steps).replace('\\', '\\\\')
         sql = string.Template(
             'insert into test_batch (test_suite_id, test_case_id, name,steps,ip) values ("$test_suite_id","$test_case_id","$name","$steps","$ip");')
         sql = sql.substitute(test_suite_id=test_suite_id, test_case_id=test_case_id, steps=steps, name=name,ip=ip)
@@ -90,6 +92,8 @@ class test_batch_manage(object):
     def update_test_batch(self,id,fieldlist,valuelist):
         update_value = ''
         for i in range(len(fieldlist)):
+            if fieldlist[i]=='steps':
+                valuelist[i]=valuelist[i].replace('\\','\\\\')
             update_value = update_value+' %s = "%s"' %(str(fieldlist[i]),str(valuelist[i]))
             if i < len(fieldlist)-1 :
                 update_value = update_value+','
@@ -110,6 +114,7 @@ class test_batch_manage(object):
                     steps.replace('"', '""')
                     import re
                     steps = re.sub('"', '""', steps)
+                    steps = str(steps).replace('\\', '\\\\')
                     useDB.useDB().insert('update test_batch set status=0, steps = "%s" where id = %s ;' % (steps,case[0]) )
                     log.log().logger.info('update test_batch set status=0, steps = "%s" where id = %s ;' % (steps,case[0]) )
                     # log.log().logger.info(steps[0])

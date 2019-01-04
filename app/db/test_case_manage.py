@@ -18,7 +18,7 @@ class test_case_manage:
         if len(result):
             result=result[0]
             sql = string.Template('insert into test_case (module,name,steps,description,isPublicFunction) values ("$module","$name","$steps","$description",$isPublic);')
-            sql = sql.substitute(name = result['name'], module = result['module'], steps = result['steps'],description=result['description'], isPublic=result['isPublic'])
+            sql = sql.substitute(name = result['name'], module = result['module'], steps = result['steps'].replace('\\', '\\\\'),description=result['description'], isPublic=result['isPublic'])
             useDB.useDB().insert(sql)
             result = 1
         else:
