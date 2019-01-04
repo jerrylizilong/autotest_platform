@@ -7,6 +7,7 @@ class test_case_manage:
         self.name = ''
 
     def new_test_case(self,module,name,steps,description, isPublic):
+        steps = str(steps).replace('\\', '\\\\')
         sql = string.Template('insert into test_case (module,name,steps,description,isPublicFunction) values ("$module","$name","$steps","$description",$isPublic);')
         sql = sql.substitute(name = name, module = module, steps = steps,description=description, isPublic=isPublic)
         useDB.useDB().insert(sql)
@@ -28,6 +29,8 @@ class test_case_manage:
     def update_test_case(self,id,fieldlist,valueList):
         update_value = '%s = "%s"' %(fieldlist[0],valueList[0])
         for i in range(1,len(fieldlist)):
+            if fieldlist[i]=='steps':
+                valueList[i]=valueList[i].replace('\\','\\\\')
             update_value += ', %s = "%s"' %(fieldlist[i],valueList[i])
         sql = string.Template('update test_case set $field where id = "$id";')
         sql = sql.substitute(field = update_value, id = id)
