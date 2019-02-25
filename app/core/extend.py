@@ -21,7 +21,10 @@ class extend():
                     return element
                 else:
                     elements.remove(element)
-        return elements[0]
+        if len(elements)>0:
+            return elements[0]
+        else:
+            raise NoSuchElementException
 
     def find_elements(self,driver,para_list):
         method, value = para_list[0], para_list[1]
@@ -193,6 +196,7 @@ class extend():
 
     def fill(self,driver,para_list,text, is_displayed = True):
         element = self.find_element(driver, para_list,is_displayed)
+        print(len(element))
         # element = driver.find_element(by=para_list[0],value=para_list[1])
         element.clear()
         element.send_keys(text)
