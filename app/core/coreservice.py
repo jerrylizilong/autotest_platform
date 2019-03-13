@@ -7,7 +7,6 @@ from app.db import test_task_manage
 def main():
 
     idList = test_task_manage.test_task_manage().test_suite_list()
-    idList1 = test_task_manage.test_task_manage().test_case_list()
     if len(idList):
         for caselist in idList:
             test_suite_id = caselist[0]
@@ -28,6 +27,7 @@ def main():
         result1 = 0
     else:
         result1=1
+    idList1 = test_task_manage.test_task_manage().test_case_list()
     if len(idList1):
         threadNum = 1
         process.process().multipleRun(idList1, threadNum)
