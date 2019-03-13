@@ -195,6 +195,7 @@ class extend():
         time.sleep(2)
 
     def fill(self,driver,para_list,text, is_displayed = True):
+        text = self.replaceRandomValue(text)
         element = self.find_element(driver, para_list,is_displayed)
         print(len(element))
         # element = driver.find_element(by=para_list[0],value=para_list[1])
@@ -223,3 +224,11 @@ class extend():
             return element.get_attribute('innerText')
         else:
             return ''
+
+
+    def replaceRandomValue(self,oriValue):
+        import random
+        newValue = str(oriValue).replace('{r}',str(random.randint(10000,99999)))
+        print(oriValue,newValue)
+        return newValue
+
