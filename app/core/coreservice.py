@@ -29,7 +29,7 @@ def main():
         result1=1
     idList1 = test_task_manage.test_task_manage().test_case_list()
     if len(idList1):
-        threadNum = 1
+        threadNum = 6
         process.process().multipleRun(idList1, threadNum)
         result2 = 0
     else:
