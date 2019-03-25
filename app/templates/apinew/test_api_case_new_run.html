@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - 手工测试api{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/api_new/test_api_run_new.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+    <script src="../static/scripts/util/jquery.validate.min.js"></script>
+    <!--<script>window.onload =function(){-->
+            <!--document.getElementById('btn_fullurl').click();-->
+            <!--}</script>-->
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <h1 style="text-align:center">手动测试接口</h1>
+        <form class="form-horizontal">
+             <!--action="/save_new_test_case" method="post"-->
+            <div class="form-group">
+                <label for="id" class="col-sm-2 control-label">测试ID</label>
+                <div class="col-sm-1">
+                    <input type="text" class="form-control readonly" id="id" name="id" value="{{id}}" readonly="readonly">
+                </div>
+                <label for="name" class="col-sm-2 control-label">name</label>
+                <div class="col-sm-1">
+                    <input type="text" class="form-control readonly" id="name" name="name"  readonly="readonly">
+                </div>
+                <label for="url" class="col-sm-2 control-label">url</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control readonly" id="url" name="url"  readonly="readonly">
+                </div>
+            </div>
+                <div class="form-group">
+                <label for="osign_list" class="col-sm-2 control-label">加密参数列表</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control readonly" id="osign_list" name="osign_list"  readonly="readonly">
+                </div>
+                </div>
+
+             <div class="form-group">
+             <div class="select-editable">
+                <label for="host_id" class="col-sm-2 control-label">host</label>
+                <div class="col-sm-10" >
+                    <select class="form-control" id="host_id" name="host_id" onchange="changehost();">
+                        <option value="">-请选择-</option>
+                    </select>
+                    <input class="form-control" type="text" id="host" value="" />
+                </div>
+            </div>
+             </div>
+            <div class="form-group">
+                <label for="url" class="col-sm-2 control-label">完整链接</label>
+                <div class="col-sm-10">
+                    <button id="btn_fullurl" type="button" class="btn btn-default" onclick="fullurl();">刷新链接</button>
+                    <textarea class="form-control required" id="fullurlcontext" name="content"  cols="30" rows="3"  readonly="readonly"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">参数列表       ：</label>
+                <div class="col-sm-10">
+                    <button id="btn_reosign" type="button" class="btn btn-default" onclick="reosign();">重算签名</button>
+             <table id="paraTable" class="col-sm-2 control-tabel">
+                    <thead>
+                        <tr>
+                          <th>参数名称</th>
+                          <th>参数值</th>
+                        </tr>
+                       </thead>
+                 <tbody id='tbody'>
+                </tbody>
+              </table></div></div>
+             <div class="form-group">
+                <label for="response" class="col-sm-2 control-label">response</label>
+                 <div class="col-sm-10">
+                             <textarea class="form-control required" id="response" name="response"  cols="30" rows="3"  readonly="readonly"></textarea>
+                 </div>
+            </div>
+              <div class="form-group">
+                <label for="content" class="col-sm-2 control-label">content</label>
+
+                 <div class="col-sm-10">
+                             <textarea class="form-control required" id="content" name="content"  cols="30" rows="3"  readonly="readonly"></textarea>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="btn_add" type="button" class="btn btn-default" onclick="window.location.href=('/test_api_new')">返回</button>
+                    <button id="btn_test" type="button" class="btn btn-default" onclick="runapitest();">测试</button>
+                    <!--<button id="btn_refresh_prepose" type="button" class="btn btn-default" onclick="refresh_prepose({{batch_id}},{{url_id}});">刷新前置参数</button>-->
+                 </div>
+            </div>
+
+<style type="text/css">
+    *{
+       margin:0px;
+       padding:0px;
+    }
+    body table{
+        border:1px solid black;
+    }
+    th{
+        border:1px solid black;
+        text-align:center;
+        line-height:center;
+        width:400px;
+        height:30px;
+    }
+    td{
+        border:1px solid black;
+        text-align:center;
+        line-height:center;
+    }
+</style>
+        </form>
+    </div>
+{% endblock %}

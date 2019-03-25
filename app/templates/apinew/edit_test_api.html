@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - edit test api{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/api_new/test_api_new.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+    <script src="../static/scripts/util/jquery.validate.min.js"></script>
+    <script>get_api_info({{id}});</script>
+
+{% endblock %}
+
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <h1 style="text-align:center">编辑接口</h1>
+        <div class="form-group">
+        <input type="text" class="form-control required" id="paraList" name="paraList"
+                           placeholder="请输入参数URL">
+        <button id="btn_copy" type="button" class="btn btn-default" onclick="readPara();">读取</button>
+        </div>
+        <div class="form-horizontal">
+             <!--action="/save_new_test_case" method="post"-->
+            <div class="form-group">
+                <label for="id" class="col-sm-2 control-label">id</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control required" id="id" name="id"
+                           readonly="readonly" value="{{id}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control required" id="name" name="name"
+                           placeholder="请输入接口用例名称">
+                </div>
+            </div>
+		    <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">描述</label>
+                    <div class="col-sm-10">
+                        <input type="longtext" class="form-control" id="description" name="description"
+                               placeholder="请输入描述">
+                    </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">所属产品</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" onchange="selectOnchang(this)" id="product">
+                            <option value="">请选择</option>
+                            <option value="sdkapi">SDK api</option>
+                            <option value="CG">CG api</option>
+                            </select>
+                    </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">模块</label>
+                    <div class="col-sm-10">
+                       <input type="text" class="form-control required" id="module" name="module"
+                           placeholder="请输入接口所属模块">
+                    </div>
+            </div>
+            <div class="form-group">
+                <label for="url" class="col-sm-2 control-label">接口地址</label>
+                    <div class="col-sm-10">
+                       <input type="text" class="form-control required" id="url" name="url"
+                           placeholder="请输入接口所属模块">
+                    </div>
+            </div>
+            <div class="form-group">
+                <label for="osign_list" class="col-sm-2 control-label">签名参数</label>
+                    <div class="col-sm-10">
+                       <input type="text" class="form-control required" id="osign_list" name="osign_list"
+                           placeholder="请输入接口签名参数列表">
+                    </div>
+            </div>
+            <div class="form-group">
+                    <label for="tb_para" class="col-sm-2 control-label">参数列表</label>
+                    <div class="col-sm-10">
+                        <table id="tb_para" class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                     <th class="hidden-phone">字段名称</th>
+                                     <th class="hidden-phone">默认值</th>
+                                     <th class="hidden-phone">是否参数化</th>
+                                     <th class="hidden-phone">默认参数名</th>
+                                </tr>
+                          </thead>
+                         <tbody id="para_table">
+                        </table>
+
+                    </div>
+            </div>
+                 </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="submitButton" class="btn btn-default" onclick="update_api_new({{id}})">保存</button>
+                    <button id="btn_back" type="button" class="btn btn-default" onclick="window.location.href=('/test_api_new')">返回</button>
+                    </div>
+            </div>
+
+<style>
+.error{
+	color:red;
+}
+</style>
+        </div>
+    </div>
+{% endblock %}

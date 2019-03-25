@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
-from app.view import user,uitest,utils
+from app.view import user,uitest,utils,apinew
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -8,4 +8,5 @@ bootstrap = Bootstrap(app)
 app.register_blueprint(user.mod)
 app.register_blueprint(uitest.mod)
 app.register_blueprint(utils.mod)
+app.register_blueprint(apinew.mod)
 from app import views

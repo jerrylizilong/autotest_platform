@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - test apis{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/api_new/test_api_new.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+
+{% endblock %}
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <h1 style="text-align:center">查询接口</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">查询条件</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group" style="margin-top:15px">
+                        <label class="control-label col-sm-1" for="name">名称</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                        <label class="control-label col-sm-1" for="product">所属产品</label>
+                        <div class="col-sm-2">
+                        <select class="form-control" onchange="selectOnchang(this)" id="product">
+                            <option value="">请选择</option>
+                            <option value="sdkapi">SDK api</option>
+                            <option value="CG">CG api</option>
+                            </select>
+                            </div>
+                        <label class="control-label col-sm-1" for="module">模块</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="module" name="module">
+                        </div>
+                        <div class="col-sm-2" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary" onclick="searchTestCase()">查询</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add" type="button" class="btn btn-default" onclick="window.location.href=('/add_test_api_new')">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+            </button>
+        </div>
+        <table id="tb_test_api" table-layout="fixed"></table>
+    </div>
+    <!-- 模拟窗口 开始 -->
+        <div class="modal fade" id="testModal" >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                  &times;
+                </button>
+                <h4 class="modal-title">
+                  请选择执行接口地址
+                </h4>
+              </div>
+              <div class="modal-body">
+                  <input type="hidden" id="urlId">
+                   <div class="form-group">
+                        <label for="apiUrl" class="col-sm-2 control-label"> 接口地址</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="apiUrl" name="apiUrl">
+                                    </select>
+                                </div>
+                    </div>
+              </div>
+              <h4></h4>
+              <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">
+                 关闭
+                </button>
+                  <button data-dismiss="modal" class="btn btn-default" type="button" onclick="runTest();">
+                  提交
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock %}
