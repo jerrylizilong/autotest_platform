@@ -10,7 +10,9 @@ https://testerhome.com/topics/16106 ： 使用 python 多进程模块 multiproce
 
 # autotest_platform
 基于python+selenium的自动化测试管理、执行平台。
-执行效果：
+注：2019-03-25： 新增接口测试模块， 具体请查看 8.接口测试管理 部分说明
+
+UI 自动化执行效果：
 
 单条用例执行记录：
 ![example0](doc/0.png "example0")
@@ -20,6 +22,8 @@ https://testerhome.com/topics/16106 ： 使用 python 多进程模块 multiproce
 
 用例集执行统计：
 ![example2](doc/2.png "example2")
+
+
 
 ## 版本要求：
 - python 3.4 以上
@@ -183,39 +187,73 @@ Android ： 打开指定已安装的app （通过包名）
 由于我测试的 app 功能较为简单，目前只封装了这几个方法，如果需要可增加封装对应的方法。
 
 
-<!--## 1. 管理平台：-->
-<!--基于flask进行开发，进行用例、用例集、步骤等的增删改查等功能。-->
-
-<!--启动 flask：-->
-<!--```-->
-<!--python run.py-->
-<!--```-->
 
 
-<!--## 2. 启动core服务：-->
-<!--```-->
-<!--python core.py-->
-<!--```-->
+### 8.接口测试管理
+#### 8.1 思路
+- 根据url 的固定格式，自动分隔host、url 路径、参数列表。
+- 参数可进行配置为是否需要进行参数化。可以为每个参数设定对应的取值列表。
+- 在页面上可直接执行测试，并查看结果。
+
+#### 8.2 url 格式
+例如一个登录接口，格式为： host+api路径?参数1=值1&参数2=值2
+例子：
+http://localhost/login/api/test.do?username=user1&password=123456&from=android
+
+#### 8.3 添加/编辑接口
+添加步骤：
+- 复制具体的测试 url ，并点击 读取 按钮进行接口结构和参数列表解析。
+- 修改默认解析的信息。 如名称、所属产品、模块等。
+- 如果该接口需要进行签名加密，需要输入对应的签名参数列表； 如果不需要加密，留空。
+- 参数列表： 如果某个参数需要进行参数化，勾选“是否参数化”，并在默认参数名列中填入对应的参数值名称（默认与参数名称一致）
+- 点击保存按钮进行保存。
+
+如下图示：
+
+![example2](doc/读取接口信息.png "读取接口信息")
 
 
-<!--- 基于selenium进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。-->
-<!--- 需结合selenium grid 或 selenium docker 作为节点进行具体执行载体。-->
+#### 8.4 配置具体的测试host 列表和参数列表
+在 app/api_new/para.py 文件中，配置对应的参数值和host 列表（如开发环境、测试环境、正式环境）。如下图示：
+
+![example2](doc/参数配置.png "参数配置")
 
 
-<!--## 3. 启动atx core服务（需要安装对应的 atxserver ；  如不需使用该部分请跳过）：-->
-<!--```-->
-<!--python atx_core.py-->
-<!--```-->
+#### 8.5 测试执行
+- 如果需要在不同的测试服务器上进行测试（如开发环境、测试环境、正式环境），在 host 中下拉选择。 具体的host 配置请看  8.4 的说明。
+- 如果需要修改对应参数值，直接在参数列表中修改。
+- 如果需要重新计算加密值，点击 重算签名 按钮（默认使用 md5 加密，如需修改加密算法，请参考 8.6 说明进行修改）
+- 点击测试 按钮进行测试。 测试结果会在页面中展示。
+
+如下图示：
+
+![example2](doc/测试接口详情.png "测试接口详情")
 
 
-<!--- 基于atx 进行封装，从数据库中读取需要执行的测试用例，并转化、执行、记录测试结果及截图。-->
-<!--- 需安装atxserver（https://github.com/openatx/atx-server ），并修改 app/config.py 文件的以下内容：-->
+#### 8.5 签名算法修改
+在 app/api_new/api_manage.py 文件的 getOsign 方法修改对应的签名算法：
 
-<!--```-->
-<!--# atx 配置-->
-<!--isUseATX=True   # True 代表使用 atx-->
-<!--ATXHost = 'http://172.16.100.168:8002'       # 对应的 atxserver 地址-->
-<!--```-->
+```
+  def getOsign(self,para_info, osignList, appkey):
+        """
+        The real osign method.
+
+        :param para_info:
+        :param osignList:
+        :param appkey:
+        :return:
+        """
+        paraPand = ''
+        print('osign list is :',osignList)
+        for para in osignList:
+            if para == 'appKey':
+                paraPand += appkey
+            else:
+                paraPand += str(para_info[para])
+                print(para_info[para])
+        print(paraPand)
+        return self.md5(paraPand)
+```
 
 
 ——————————————————————————————————————————————————————————————————————————————————————

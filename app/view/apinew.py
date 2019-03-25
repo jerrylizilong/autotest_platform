@@ -233,10 +233,7 @@ def search_test_api_host_manage():
         log.log().logger.info('info : %s' %info)
         type = viewutil.getInfoAttribute(info, 'type')
         from app.api_new import paras
-        if type == 'CG':
-            hostList = paras.paraValues().CGHosts
-        else:
-            hostList = paras.paraValues().sdkHosts
+        hostList = paras.paraValues().Hosts
         data1 = jsonify({'total': len(hostList), 'rows': hostList})
         log.log().logger.info('data1: %s' %data1)
         return data1, {'Content-Type': 'application/json'}

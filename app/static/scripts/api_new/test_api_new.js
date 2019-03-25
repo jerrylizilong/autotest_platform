@@ -466,11 +466,7 @@ function readPara(){
                  $("#url").val(data['url']['url']);
                  $("#module").val(data['url']['url']);
                  $("#description").val(data['url']['url']);
-                 if (data['url']['type']=='api'){
-                    setProduct('CG');
-                 }else{
-                    setProduct('sdkapi');
-                 }
+                 $("#product").val(data['url']['type']);
                  setParaTable(data['paras']);
                   }
                 else

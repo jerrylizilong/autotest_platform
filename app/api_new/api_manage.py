@@ -51,10 +51,13 @@ class api_manage():
         """
         This function will split all infomation from a given url, including host, url path,type.
 
-        :param url:
+        :param url:  如： http://localhost/api/login/test.do?username=user1&password=123456&from=android
         :return:
+            host：http://localhost
+            url ： /api/login/test.do
+            type： /api
         """
-        api_type_list = ['/sdkapi','/cpapi','/api/']
+        api_type_list = ['/api/']   # 可根据接口格式，自定义对应的分隔关键字
         url_info={}
         host, api_url ,type ='','',''
         for api_type in api_type_list:
