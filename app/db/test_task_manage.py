@@ -2,7 +2,7 @@ from app import useDB
 from app.db import test_batch_manage
 class test_task_manage():
     def test_suite_list(self):
-        sql = 'select id,run_type from test_suite where status in (0,2) and run_type in ("2","Chrome)";'
+        sql = 'select id,run_type from test_suite where status in (0,2) and run_type in ("2","Chrome");'
         idList = useDB.useDB().search(sql)
         return idList
 
