@@ -71,7 +71,7 @@ var TableInit = function () {
                 title: '状态'
             }, {
                 field: 'run_type',
-                title: '用例类型'
+                title: '执行类型'
             }, {
                 field: 'name',
                 title: '名称'
