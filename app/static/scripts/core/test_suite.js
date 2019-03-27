@@ -89,8 +89,8 @@ var TableInit = function () {
                         var b = '<a href="javascript:;" onclick="window.location.href=(\'/attach_test_batch?test_suite_id='+ row.id + '\')">关联用例</a> ';
                         var e = '<a href="javascript:;" onclick="window.location.href=(\'/test_batch_detail?test_suite_id='+ row.id + '\')">执行详情</a> ';
                         var c = '<a href="javascript:;" onclick="runtest('+ row.id + ')">执行</a> ';
-//                        var d = '<a href="javascript:;" onclick="delete_test_suite(\'' + row.id + '\')">删除</a> ';
-                        return a +f+b+e+c ;
+                        var d = '<a href="javascript:;" onclick="delete_test_suite(\'' + row.id + '\')">删除</a> ';
+                        return a +f+b+e+c+d ;
                         }
                 }
                 ]
