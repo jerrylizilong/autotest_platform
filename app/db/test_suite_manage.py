@@ -116,7 +116,14 @@ class test_suite_manage:
         result = self.show_test_suites(['id'],[id],[],1)
         if len(result):
             result=result[0]
-            self.new_test_suite(result["name"],result["run_type"],result["description"],batchId )
+            run_type = ''
+            if result["run_type"] == 'Chrome':
+                run_type = 2
+            elif result["run_type"] == 'Android':
+                run_type = 0
+            elif result["run_type"] == 'iOS':
+                run_type = 1
+            self.new_test_suite(result["name"],str(run_type),result["description"],batchId )
             result = 1
         else:
             result = 0
