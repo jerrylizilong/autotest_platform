@@ -46,7 +46,6 @@ def save_new_test_case():
             else:
                 isPublic = 0
             test_case_manage.test_case_manage().new_test_case(module, name, steps, description, isPublic)
-        # return render_template("test_cases.html")
         return redirect('test_cases')
 
 @mod.route('/edit_test_case', methods=['POST', 'GET'])
@@ -670,7 +669,7 @@ def test_keywords():
         caseList = test_keyword_manage.test_keyword_manage().show_test_keywords(conditionList, valueList, fieldlist, rows)
         log.log().logger.info(caseList)
         data = caseList
-        data1 = jsonify({'total': len(data), 'rows': data})
+        data1 = jsonify({'total': len(data), 'rows': data[int(offset):int(offset)+int(limit)]})
         log.log().logger.info('data1: %s' %data1)
         return data1,{'Content-Type': 'application/json'}
 
