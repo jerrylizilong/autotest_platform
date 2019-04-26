@@ -5,32 +5,25 @@ from app.db import test_task_manage
 
 
 def main():
-
-    idList = test_task_manage.test_task_manage().test_suite_list(runtype='0')
+    """
+    查找待执行的测试用例列表，并执行。
+    :return:
+    """
     idList1 = test_task_manage.test_task_manage().test_case_list(isATX=True)
-    if len(idList):
-        for caselist in idList:
-            test_suite_id = caselist[0]
-            runType = str(caselist[1])
-            if runType =='0' or runType =='Android':
-                threadNum = 1
-                runType ='Android'
-                process.process().runmain(test_suite_id, threadNum, runType)
-        result1 = 0
-    else:
-        result1=1
     if len(idList1):
-        threadNum = 1
-        process.process().multipleRun(idList1, threadNum)
+        process.process().atxMain()
         result2 = 0
     else:
         result2=1
-    result = result1 +result2
+    result = result2
     return result
 
 
-
 def coreservice():
+    """
+    如果有待执行用例，则马上执行； 如果没有待执行的用例，则等待6秒进行下一次轮询。
+    :return:
+    """
     while (1):
         if(main()):
             time.sleep(6)

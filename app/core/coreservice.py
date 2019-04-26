@@ -5,25 +5,20 @@ from app.db import test_task_manage
 
 
 def main():
+    """
+    分别查找待执行的测试用例集， 和测试用例列表，并执行。
+    :return:
+    """
 
     idList = test_task_manage.test_task_manage().test_suite_list()
     if len(idList):
         for caselist in idList:
             test_suite_id = caselist[0]
             runType = str(caselist[1])
-            if runType =='0' or runType =='Android':
-                threadNum = 1
-                runType ='Android'
-            elif runType =='1' or runType =='iOS':
-                threadNum = 1
-                runType ='iOS'
-            elif  runType =='2' or runType =='Chrome':
+            if  runType =='2' or runType =='Chrome':
                 threadNum = 6
                 runType = 'Chrome'
-            else:
-                threadNum = 0
-                runType = ''
-            process.process().runmain(test_suite_id, threadNum, runType)
+                process.process().runmain(test_suite_id, threadNum, runType)
         result1 = 0
     else:
         result1=1
@@ -40,6 +35,10 @@ def main():
 
 
 def coreservice():
+    """
+    如果有待执行用例，则马上执行； 如果没有待执行的用例，则等待6秒进行下一次轮询。
+    :return:
+    """
     while (1):
         if(main()):
             time.sleep(6)

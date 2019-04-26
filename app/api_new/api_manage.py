@@ -7,8 +7,7 @@ class api_manage():
         Build test url for given api info.
 
         :param api_info:  json data with api info.
-        e.g: {'url': {'host': 'http://172.16.100.53/sdk_bkd_qa', 'url': '/sdkapi/v2/config/client.do', 'type': 'sdkapi'}, 'paras': {'sdkVer': '{sdkVer}', 'gameUserId': 'gameuser1', 'osign': '8b28178232f363dcc18cbddeab5efc6e', 'appId': 'testLogin', 'userId': '-1', 'ghwToken': '', 'osVer': '{osVer}', 'serverId': 'server1', 'sdkType': '{osVer}', 'clientId': 'newjerryclientID1553063211469993', 'platform': 'GUEST', 'os': '{os}', 'runPlatform': '{runPlatform}', 'bindType': '1'}}
-        :param osign_list: The list for paras to be reogin.  e.g:  ['appId', 'appKey', 'clientId', 'os', 'sdkVer', 'sdkType', 'runPlatform']
+        :param osign_list: The list for paras to be reogin.
         :param type:  by default , first value will be selected for para.  If type is set to be random , a random value will be selected from paras.py file.
         :param host_id: the host you want to test with.
             0: 53
@@ -16,8 +15,7 @@ class api_manage():
             2:product cn
             3:sdk-test1
             4:sdk-test1 cn
-        :return:  the final url.   e.g: http://172.16.100.53/sdk_bkd_qa/sdkapi/v2/config/client.do?sdkVer=3.7.0.1&gameUserId=gameuser1&osign=2eea2c803ae16f0acb02ebac226f1731&appId=testLogin&userId=-1&ghwToken=&osVer=10.0&serverId=server1&sdkType=8.0&clientId=newjerryclientID1553063211469993&platform=GUEST&os=mac&runPlatform=android&bindType=1
-
+        :return:  the final url.
         """
         para_info = self.get_para_info(api_info,osign_list,type=type)
         if host_id =='':
@@ -32,9 +30,7 @@ class api_manage():
         """
         This function will split all infomation from a given url, including host, url path,paras.
 
-        :param example_url:  http://172.16.100.53/sdk_bkd_qa/sdkapi/v2/config/client.do?sdkVer=3.7.0.1&gameUserId=gameuser1&osign=2eea2c803ae16f0acb02ebac226f1731&appId=testLogin&userId=-1&ghwToken=&osVer=10.0&serverId=server1&sdkType=8.0&clientId=newjerryclientID1553063211469993&platform=GUEST&os=mac&runPlatform=android&bindType=1
-        :return:  json format data, e.g: {'url': {'host': 'http://172.16.100.53/sdk_bkd_qa', 'url': '/sdkapi/v2/config/client.do', 'type': 'sdkapi'}, 'paras': {'sdkVer': '{sdkVer}', 'gameUserId': 'gameuser1', 'osign': '8b28178232f363dcc18cbddeab5efc6e', 'appId': 'testLogin', 'userId': '-1', 'ghwToken': '', 'osVer': '{osVer}', 'serverId': 'server1', 'sdkType': '{osVer}', 'clientId': 'newjerryclientID1553063211469993', 'platform': 'GUEST', 'os': '{os}', 'runPlatform': '{runPlatform}', 'bindType': '1'}}
-
+        :param
         """
         api_url,para_url = example_url.split('?')
         paras = para_url.split('&')
@@ -51,7 +47,7 @@ class api_manage():
         """
         This function will split all infomation from a given url, including host, url path,type.
 
-        :param url:  如： http://localhost/api/login/test.do?username=user1&password=123456&from=android
+        :param url:  如： http://localhost/api/login/test.do?username=user1&password=123456
         :return:
             host：http://localhost
             url ： /api/login/test.do
@@ -103,8 +99,8 @@ class api_manage():
 
     def get_para_values(self,para_name,type='default'):
         """
-        Convert para's value to target value.  If you want to set a para to be changeable, set the value to be {paraname} in api info.    e.g:  'sdkType': '{sdkType}'
-        the value is saved on paras.py , such as :    sdkType = ['html5','android','ios']
+        Convert para's value to target value.  If you want to set a para to be changeable, set the value to be {paraname} in api info.
+        the value is saved on paras.py , such as :
         :param para_info:
         :param type:  there are three types:
             default :  return the first value on the value list.
@@ -194,18 +190,14 @@ class api_manage():
         import httplib2
         print(url)
         http = httplib2.Http(timeout=30)
-        headers1 = {'Content-type': 'application/json;charset=utf8',
-                    'Referer': 'http://game.chipsgames.com/sdk_resource/h5/index.html?channelId=jerrychannel1&campaignId=jerrycampaign1'}
-        headers2 = {'Content-type': 'application/json;charset=utf8',
-                    'Referer': 'http://172.16.100.55/sdk_resource/h5/index.html?channelId=jerrychannel1&campaignId=jerrycampaign1'}
-        # headers = {'Content-type': 'application/json;charset=utf8'}
+        headers = {'Content-type': 'application/json;charset=utf8'}
         tryTime = 3
         while tryTime:
             try:
                 if usingHeader:
-                    response, content = http.request(url, 'POST', headers=headers2)
+                    response, content = http.request(url, 'POST',body='', headers=headers)
                 else:
-                    response, content = http.request(url, 'POST', headers=headers1)
+                    response, content = http.request(url, 'POST', headers=headers)
                 content = content.decode('utf-8')
                 break
             except Exception as e:
@@ -214,13 +206,3 @@ class api_manage():
                 tryTime += -1
         return response, content
 
-
-if __name__=='__main__':
-    url = "http://172.16.100.53/sdk_bkd_qa/sdkapi/v2/config/client.do?sdkVer={sdkVer}&gameUserId=gameuser1&osign=8b28178232f363dcc18cbddeab5efc6e&appId=testLogin&userId=-1&ghwToken=&osVer={osVer}&serverId=server1&sdkType={osVer}&clientId=newjerryclientID1553063211469993&platform=GUEST&os={os}&runPlatform={runPlatform}&bindType=1"
-    api_info = api_manage().get_api_paras(api_manage().split_api_info(url))
-    print(api_info)
-    osign_list = ['appId', 'appKey', 'clientId', 'os', 'sdkVer', 'sdkType', 'runPlatform']
-    # print(api_manage().build_api_url(api_info,osign_list))
-    # print(api_manage().build_api_url(api_info,osign_list,type='random',host_id=1))
-    from app.db import test_api_new_manange
-    test_api_new_manange.test_api_new_manange().new_test_api(name='client',product=api_info['url']['type'],module='config',url=api_info['url']['url'],paras=api_info['paras'],osign_list=osign_list,description='test')
