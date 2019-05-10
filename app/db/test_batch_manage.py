@@ -15,7 +15,7 @@ class test_batch_manage(object):
         import re
         steps = re.sub('"', '""', steps)
         steps = str(steps).replace('\\', '\\\\')
-        sql = string.Template('insert into test_batch (test_suite_id, test_case_id, name,steps,browser_type) values ("$test_suite_id","$test_case_id","$name","$steps","$browser_type");')
+        sql = string.Template('insert into test_batch (test_suite_id, test_case_id, name,steps,browser_type,status) values ("$test_suite_id","$test_case_id","$name","$steps","$browser_type",-1);')
         sql = sql.substitute(test_suite_id = test_suite_id, test_case_id = test_case_id,steps=steps, name = name,browser_type=browser_type)
         useDB.useDB().insert(sql)
 
@@ -26,7 +26,7 @@ class test_batch_manage(object):
         steps = re.sub('"', '""', steps)
         steps = str(steps).replace('\\', '\\\\')
         sql = string.Template(
-            'insert into test_batch (test_suite_id, test_case_id, name,steps,ip) values ("$test_suite_id","$test_case_id","$name","$steps","$ip");')
+            'insert into test_batch (test_suite_id, test_case_id, name,steps,ip,status) values ("$test_suite_id","$test_case_id","$name","$steps","$ip",-1);')
         sql = sql.substitute(test_suite_id=test_suite_id, test_case_id=test_case_id, steps=steps, name=name,ip=ip)
         useDB.useDB().insert(sql)
 
