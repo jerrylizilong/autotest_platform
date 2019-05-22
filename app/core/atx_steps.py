@@ -112,6 +112,7 @@ class atx_driver():
                 time.sleep(1)
             else:
                 log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" %(method,resource_id))
+                u.swipe_points([(0.509, 0.601), (0.503, 0.149)], 0.2)
                 result = '2'
         elif method== 'name':
             if u(text=resource_id).exists:
@@ -122,6 +123,7 @@ class atx_driver():
                 time.sleep(1)
             else:
                 log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % (method, resource_id))
+                u.swipe_points([(0.509, 0.601), (0.503, 0.149)], 0.2)
                 result = '2'
         elif method== 'class':
             if u(className=resource_id).exists:
@@ -132,6 +134,7 @@ class atx_driver():
                 time.sleep(1)
             else:
                 log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % (method, resource_id))
+                u.swipe_points([(0.509, 0.601), (0.503, 0.149)], 0.2)
                 result = '2'
         else:
             log.log().logger.error(u"元素方法未定义！ %s" %method)
@@ -158,6 +161,7 @@ class atx_driver():
             result = '1'
         else:
             log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % ('text', text))
+            u.swipe_points([(0.509, 0.601), (0.503, 0.149)], 0.2)
             result = '2'
         return u,result
 
@@ -169,6 +173,7 @@ class atx_driver():
             result = '1'
         else:
             log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % ('id', id))
+            u.swipe_points([(0.509, 0.601), (0.503, 0.149)], 0.2)
             result = '2'
         return u, result
 
@@ -180,6 +185,7 @@ class atx_driver():
             result = '1'
         else:
             log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % ('description', id))
+            u.swipe_points([(0.509, 0.601), (0.503, 0.149)], 0.2)
             result = '2'
         return u, result
 
@@ -191,6 +197,7 @@ class atx_driver():
             result = '1'
         else:
             log.log().logger.error(u"出错了，没有找到元素！ by %s , %s" % ('className', id))
+            u.swipe_points([(0.509, 0.601), (0.503, 0.149)], 0.2)
             result = '2'
         return u, result
 
