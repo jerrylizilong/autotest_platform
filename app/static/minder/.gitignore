@@ -1,0 +1,8 @@
+.idea
+.DS_Store
+bower_components/
+node_modules/
+dist/
+ui/templates.js
+.tmp/
+upload/

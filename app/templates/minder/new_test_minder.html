@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}WingSDK 测试平台 - new test minder{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width" />
+    <script src="../static/jquery-1.12.4.js"></script>
+    <script src="../static/scripts/util/init.js"></script>
+    <script src="../static/scripts/util/util.js"></script>
+    <script src="../static/scripts/minder/test_minders.js"></script>
+
+    <script src="../static/bootstrap-3.3.7-dist/dist/js/bootstrap.js"></script>
+    <link href="../static/bootstrap-3.3.7-dist/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../static/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+    <link href="../static/bootstrap-table-develop/dist/bootstrap-table.css" rel="stylesheet" />
+    <script src="../static/scripts/util/jquery.validate.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <h1 style="text-align:center">新增测试脑图</h1>
+        <form class="form-horizontal" id="new_test_minder">
+             <!--action="/save_new_test_case" method="post"-->
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control required" id="name" name="name"
+                           placeholder="请输入名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="module" class="col-sm-2 control-label">模块</label>
+                    <div class="col-sm-10">
+                            <input type="longtext" class="form-control" id="module" name="module"
+                               placeholder="请输入说明">
+                    </div>
+            </div>
+		    <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">说明</label>
+                    <div class="col-sm-10">
+                        <input type="longtext" class="form-control" id="description" name="description"
+                               placeholder="请输入说明">
+                    </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="btn_add" type="button" class="btn btn-default" onclick="submitAddMinderForm()">保存</button>
+                    <button id="btn_back" type="button" class="btn btn-default" onclick="window.location.href=('/test_minders')">返回</button>
+                    </div>
+            </div>
+
+<style>
+.error{
+	color:red;
+}
+</style>
+        </form>
+    </div>
+{% endblock %}
