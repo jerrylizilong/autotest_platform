@@ -57,7 +57,10 @@ class test_minder_manage:
         condition = ''
         for i in range(len(conditionList)):
             if valueList[i] !='':
-                condition += ' and %s = "%s"' %(conditionList[i],valueList[i])
+                if conditionList[i]=='id':
+                    condition += ' and %s = "%s"' %(conditionList[i],valueList[i])
+                else:
+                    condition += ' and '+str(conditionList[i]) +' like "%'+str(valueList[i])+'%"'
         results = []
 
         sql = 'select ' + search_value + ' from test_minder where status = 1 ' + str(condition) + ' order by id desc limit '+ str(rows)+';'
