@@ -260,6 +260,11 @@ http://localhost/login/api/test.do?username=user1&password=123456&from=android
 
 
 
+### 9.集成百度脑图
+思路：集成 kityminder-editor https://github.com/fex-team/kityminder-editor 框架，并将脑图的内容保存到数据库和读取展现。
+
+
+
 # GET START:
 ## 安装步骤：
 ### 1. clone 或下载代码包到本地解压:
