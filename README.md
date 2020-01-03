@@ -363,7 +363,7 @@ docker pull selenium/node-firefox
 启动 hub :
 ```
 docker network create grid
-docker run -d -p 4444:4444 --net grid --name selenium-hub selenium/hu
+docker run -d -p 4444:4444 --net grid --name selenium-hub selenium/hub
 ```
 启动节点：
 ```
