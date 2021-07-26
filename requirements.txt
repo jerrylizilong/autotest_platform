@@ -15,7 +15,7 @@ lml==0.0.2
 logzero==1.5.0
 MarkupSafe==1.0
 mysql-connector-python==8.0.12
-Pillow==8.1.1
+Pillow==8.2.0
 protobuf==3.6.0
 pyecharts==0.5.5
 pyecharts-javascripthon==0.0.6
