@@ -7,7 +7,7 @@ Flask==2.3.2
 Flask-Bootstrap==3.3.7.1
 future==0.18.3
 httplib2==0.19.0
-idna==2.7
+idna==3.7
 itsdangerous==0.24
 Jinja2>=2.10.1
 jupyter-echarts-pypkg==0.1.1
